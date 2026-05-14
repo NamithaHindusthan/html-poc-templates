@@ -1,0 +1,70 @@
+Hierarchy & Reporting
+
+Super Admin (super_admin)
+
+Top-level boss
+
+Receives reports from all insurance_admins
+
+Sees all buyers (organization owners + users)
+
+Full dashboards: revenue, policies, claims, payments, analytics
+
+Insurance Admin (insurance_admin)
+
+Active sellers
+
+Report to Super Admin
+
+Manage policies, claims, and payments for:
+
+Independent users
+
+Organization users (assigned by Admin)
+
+Dashboards focused on sales, commissions, assigned buyers
+
+Organization Owner (organization_owner)
+
+Buyer
+
+Owns an organization
+
+Views all users in their organization
+
+Cannot sell insurance or manage policies
+
+Dashboards: organization stats, payments, claims
+
+Organization User (organization_user)
+
+Buyer
+
+Can be independent or part of an organization
+
+Views personal policies, payments, claims
+
+User Hierarchy Table Logic
+
+manager_id →
+
+For insurance_admin: points to super_admin
+
+For organization_user in org: points to organization_owner
+
+For independent organization_user: points to insurance_admin
+
+subordinate_id → points to the actual user under the manager
+
+
+
+| Role               | Reports Seen                       | Dashboard Highlights                                              |
+| ------------------ | ---------------------------------- | ----------------------------------------------------------------- |
+| Super Admin        | All insurance\_admins + all buyers | Revenue, total policies, total claims, commissions, notifications |
+| Insurance Admin    | Own sales + buyers assigned        | Policies sold, claims processed, payments collected, commissions  |
+| Organization Owner | Users under org                    | Policies, payments, claims per user in org                        |
+| Organization User  | Personal data                      | Policies owned, payments made, claims status                      |
+
+
+
+

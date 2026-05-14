@@ -1,0 +1,178 @@
+1. Super Admin Dashboard Layout
+----------------------------------------------------------
+| Logo | Platform Name | Notifications 🔔 | Profile Menu  |
+----------------------------------------------------------
+| Sidebar:                                              |
+|  - Dashboard                                         |
+|  - Users Management                                  |
+|  - Policies                                         |
+|  - Claims                                          |
+|  - Payments & Commissions                            |
+|  - Notifications / Announcements                    |
+|  - Analytics / Reports                               |
+|  - Settings                                         |
+----------------------------------------------------------
+| Main Content:                                       |
+|  1. KPI Cards (Top Row):                            |
+|     - Total Users      | Total Agents      | Total Clients |
+|     - Total Policies   | Total Revenue     | Active Claims |
+|                                                     |
+|  2. Charts (Middle Section):                        |
+|     - Policies Growth (Line/Bar chart)             |
+|     - Payments & Commissions Trend (Line chart)    |
+|     - Agent Performance Heatmap                    |
+|                                                     |
+|  3. Tables / Lists (Bottom Section):               |
+|     - Recent Activities / Alerts                   |
+|     - Pending Assignments / Tasks                  |
+----------------------------------------------------------
+| Footer / Quick Links                                 |
+----------------------------------------------------------
+
+Special Features:
+
+Assign agents/admins to regions
+
+Broadcast announcements / notifications
+
+Filterable tables & charts
+
+
+2. Admin / Regional Manager Dashboard Layout
+
+----------------------------------------------------------
+| Logo | Platform Name | Notifications 🔔 | Profile Menu  |
+----------------------------------------------------------
+| Sidebar:                                              |
+|  - Dashboard                                         |
+|  - Agents Management                                 |
+|  - Clients under Agents                               |
+|  - Policies                                         |
+|  - Claims                                          |
+|  - Notifications                                     |
+----------------------------------------------------------
+| Main Content:                                       |
+|  1. KPI Cards (Top Row):                            |
+|     - My Agents Count | Clients under Agents        |
+|     - Active Policies | Pending Payments            |
+|                                                     |
+|  2. Charts (Middle Section):                        |
+|     - Agent Performance (Bar chart)                |
+|     - Payment Collection Trends                     |
+|                                                     |
+|  3. Tables / Lists (Bottom Section):               |
+|     - Agents List → Click to see Clients & Policies|
+|     - Expiration Alerts / Pending Claims           |
+----------------------------------------------------------
+
+Special Features:
+
+Add/approve agents
+
+Assign clients to agents
+
+Notifications for assigned agents
+
+
+3. Sub-Agent / Agent Dashboard Layout
+
+----------------------------------------------------------
+| Logo | Platform Name | Notifications 🔔 | Profile Menu  |
+----------------------------------------------------------
+| Sidebar:                                              |
+|  - Dashboard                                         |
+|  - My Clients                                        |
+|  - Policies                                         |
+|  - Claims                                          |
+|  - Payments                                        |
+|  - Tasks / Reminders                                |
+|  - Notifications                                     |
+----------------------------------------------------------
+| Main Content:                                       |
+|  1. KPI Cards (Top Row):                            |
+|     - Total Clients | Active Policies               |
+|     - Policies Expiring Soon | Pending Tasks        |
+|                                                     |
+|  2. Tables / Lists (Middle Section):               |
+|     - Clients List → Click for Details              |
+|     - Policies List → Renewal Alerts               |
+|     - Claims List → Status                          |
+|                                                     |
+|  3. Tasks / Reminders (Side or Bottom Section):    |
+|     - Follow-up schedule with clients              |
+----------------------------------------------------------
+Special Features:
+
+Upload client documents
+
+Mark tasks as done/overdue
+
+Pop-up notifications for policy expiry / payment alerts
+
+
+4. Client Dashboard Layout
+
+----------------------------------------------------------
+| Logo | Platform Name | Notifications 🔔 | Profile Menu  |
+----------------------------------------------------------
+| Sidebar:                                              |
+|  - Dashboard / Summary                                |
+|  - My Policies                                       |
+|  - Claims                                           |
+|  - Payments                                         |
+|  - Documents                                        |
+|  - Notifications                                     |
+----------------------------------------------------------
+| Main Content:                                       |
+|  1. KPI Cards (Top Row):                            |
+|     - Active Policies | Pending Payments            |
+|     - Claims Status                                 |
+|                                                     |
+|  2. Tables / Lists (Middle Section):               |
+|     - Policy List → Click for details & documents  |
+|     - Claims List → Status & Approved Amount       |
+|                                                     |
+|  3. Upload Section (Bottom Section):               |
+|     - KYC / Aadhaar / PAN / Other Documents        |
+|     - Upload Progress Bar                           |
+----------------------------------------------------------
+Special Features:
+
+Upload documents
+
+View/download policy documents
+
+Pop-up notifications for policy/claim updates
+
+
+5. 5️⃣ Notifications / Pop-up Design
+
+Top-right corner for all dashboards
+
+Dropdown / scrollable list
+
+Real-time updates (via WebSocket or polling)
+
+Example content:
+
+“Policy #12345 expires in 7 days”
+
+“New client assigned to you”
+
+“Payment of $500 completed”
+
+Click → navigates to relevant page (policy, client, payment)
+
+
+
+6️. Components / Placement Summary
+| Component           | Role Placement      | Notes                                        |
+| ------------------- | ------------------- | -------------------------------------------- |
+| Sidebar             | All dashboards      | Role-based menu                              |
+| Header / Topbar     | All dashboards      | Notifications, profile                       |
+| KPI Cards           | All dashboards      | Shows top metrics (users, policies, revenue) |
+| Charts              | Admin / Super Admin | Policy growth, payments, agent performance   |
+| Tables / Lists      | All dashboards      | Users, clients, policies, claims             |
+| Tasks / Reminders   | Sub-Agent / Admin   | Follow-ups & pending actions                 |
+| Upload / Document   | Sub-Agent / Client  | KYC, PAN, Aadhaar, claim documents           |
+| Notifications Popup | All dashboards      | Real-time alerts                             |

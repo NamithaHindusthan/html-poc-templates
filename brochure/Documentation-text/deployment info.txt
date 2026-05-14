@@ -1,0 +1,18 @@
+🌐 Free Deployment Stack
+
+Frontend (React): Vercel or Netlify (best free options)
+
+Backend (Python FastAPI/Django/Flask): Render (free tier, supports Python apps)
+
+Database (PostgreSQL): ElephantSQL (free 20MB) OR Supabase (free 500MB + extras)
+Database (PostgreSQL): ElephantSQL (free 20MB) OR Supabase (free 500MB + extras)
+
+
+
+
+
+✅ My suggestion for your Python + React + PostgreSQL small app:
+
+Start simple → Use Render auto-deploy (backend) + Vercel auto-deploy (frontend).
+
+Add pipeline later if you feel the need (like running tests or linting before deployment).

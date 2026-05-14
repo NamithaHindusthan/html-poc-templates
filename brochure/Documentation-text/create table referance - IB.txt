@@ -1,0 +1,180 @@
+Perfect 👍 Let me give you the full PostgreSQL schema here in text form (SQL CREATE TABLE statements) along with notes and sample data. This matches what I structured in the PDF.
+
+📌 PostgreSQL Schema for Insurance Broker Platform
+1. Roles
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT
+);
+
+-- Sample Data
+INSERT INTO roles (role_name, description) VALUES
+('super_admin', 'Main broker / platform owner'),
+('regional_manager', 'Oversees multiple agents in a region'),
+('sub_agent', 'Sales agent managing clients and policies'),
+('client', 'End user buying/managing policies');
+
+2. Users
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    role_id INT REFERENCES roles(role_id) NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    password_hash TEXT NOT NULL,
+    address TEXT,
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Sample
+INSERT INTO users (role_id, full_name, email, phone, password_hash)
+VALUES
+(1, 'Main Broker', 'broker@abc.com', '9998887777', 'hashed_pass'),
+(3, 'Rajesh Agent', 'rajesh@abc.com', '9876543210', 'hashed_pass'),
+(4, 'Anita Client', 'anita@abc.com', '9123456789', 'hashed_pass');
+
+3. User Hierarchy
+
+Links managers with their subordinates.
+
+CREATE TABLE user_hierarchy (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    manager_id UUID REFERENCES users(id) NOT NULL,
+    subordinate_id UUID REFERENCES users(id) NOT NULL,
+    relationship_type VARCHAR(50),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Example
+-- super_admin → sub_agent, sub_agent → client
+
+4. Agents (extra profile for users with role agent/regional_manager)
+CREATE TABLE agents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID UNIQUE REFERENCES users(id) NOT NULL,
+    region VARCHAR(100),
+    commission_rate DECIMAL(5,2) DEFAULT 0.00,
+    performance_score DECIMAL(5,2) DEFAULT 0.00,
+    manager_id UUID REFERENCES agents(id),
+    joined_at TIMESTAMP DEFAULT NOW(),
+    metadata JSONB
+);
+
+5. Clients
+CREATE TABLE clients (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID UNIQUE REFERENCES users(id) NOT NULL,
+    agent_id UUID REFERENCES agents(id),
+    date_of_birth DATE,
+    gender VARCHAR(20),
+    occupation VARCHAR(100),
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+6. Policies (master catalog of insurance products)
+CREATE TABLE policies (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    policy_code VARCHAR(50) UNIQUE NOT NULL,
+    policy_type VARCHAR(50), -- vehicle, health, term_life, property, travel
+    provider VARCHAR(150),
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    base_premium DECIMAL(10,2),
+    cover_details JSONB,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+7. Client Policies (assigned to clients)
+CREATE TABLE client_policies (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    client_id UUID REFERENCES clients(id) NOT NULL,
+    policy_id UUID REFERENCES policies(id) NOT NULL,
+    agent_id UUID REFERENCES agents(id),
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    premium_amount DECIMAL(12,2) NOT NULL,
+    billing_cycle VARCHAR(20) DEFAULT 'annual',
+    status VARCHAR(50) DEFAULT 'pending',
+    document_url TEXT,
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+8. Payments
+CREATE TABLE payments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    client_policy_id UUID REFERENCES client_policies(id) NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    currency VARCHAR(10) DEFAULT 'INR',
+    payment_date TIMESTAMP DEFAULT NOW(),
+    due_date DATE,
+    status VARCHAR(20) DEFAULT 'paid',
+    method VARCHAR(50),
+    transaction_ref VARCHAR(150),
+    metadata JSONB
+);
+
+9. Notifications
+CREATE TABLE notifications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_key VARCHAR(100) UNIQUE NOT NULL,
+    title_template VARCHAR(200),
+    message_template TEXT,
+    channel VARCHAR(50),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE notification_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    notification_id UUID REFERENCES notifications(id),
+    recipient_user_id UUID REFERENCES users(id),
+    channel VARCHAR(50),
+    delivered_at TIMESTAMP,
+    status VARCHAR(50),
+    payload JSONB,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+10. Audit Logs
+CREATE TABLE audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id),
+    action VARCHAR(200) NOT NULL,
+    details JSONB,
+    ip_address VARCHAR(50),
+    user_agent TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+11. Analytics (Monthly Reports for Dashboards)
+CREATE TABLE analytics_monthly_reports (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    owner_id UUID REFERENCES users(id),
+    region VARCHAR(100),
+    year INT NOT NULL,
+    month INT NOT NULL,
+    total_policies INT DEFAULT 0,
+    new_policies INT DEFAULT 0,
+    renewed_policies INT DEFAULT 0,
+    total_revenue DECIMAL(14,2) DEFAULT 0.00,
+    total_commission DECIMAL(14,2) DEFAULT 0.00,
+    claims_count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+✅ This schema is modular, extensible, and optimized:
+
+JSONB fields allow flexibility (extra attributes without schema changes).
+
+Audit + Notifications keep history & traceability.
+
+Analytics table is denormalized for fast dashboards.

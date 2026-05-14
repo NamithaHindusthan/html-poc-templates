@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insurance Brochure - Gagan Shah</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @media print {
+      body { background: white !important; padding: 0 !important; }
+      .brochure-container { box-shadow: none !important; max-width: 148mm !important; width: 148mm !important; page-break-after: always; }
+      .page { height: 210mm !important; page-break-after: always; page-break-inside: avoid; }
+      .nav-controls { display: none !important; }
+      .slider { transform: none !important; }
+      .page { min-width: 100% !important; }
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f0e8 0%, #e8dcc8 100%);
+      display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;
+    }
+    .brochure-container { max-width: 148mm; width: 148mm; background: white; border-radius: 10px; box-shadow: 0 20px 60px rgba(111, 78, 55, 0.3); overflow: hidden; position: relative; }
+    .slider-wrapper { overflow: hidden; position: relative; }
+    .slider { display: flex; transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    .page { min-width: 100%; height: 210mm; padding: 15mm; background: #FDF9F3; overflow-y: auto; }
+    .page h1 { font-family: 'Playfair Display', serif; color: #6F4E37; font-size: 1.8rem; margin-bottom: 10px; text-align: center; }
+    .page h2 { font-family: 'Playfair Display', serif; color: #8B4513; font-size: 1.4rem; margin-top: 15px; margin-bottom: 10px; }
+    .page p { color: #5C4A3A; line-height: 1.6; font-size: 0.85rem; }
+
+    /* Cover Page */
+    .cover-page { background: linear-gradient(135deg, #A7C4B8 0%, #6F8B7F 100%); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+    .cover-page::before { content: ""; position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -100px; right: -100px; }
+    .cover-page::after { content: ""; position: absolute; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; bottom: -50px; left: -50px; }
+    .cover-icon { width: 150px; height: 150px; margin: 15px auto; animation: float 3s ease-in-out infinite; z-index: 1; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); }}
+    .cover-page .agent-info { z-index: 1; color: white; }
+    .cover-page h1 { color: white; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px; z-index: 1; }
+    .cover-page .subtitle { color: #FDF5E6; font-size: 1.1rem; font-weight: 300; margin-bottom: 20px; z-index: 1; }
+
+    /* Chat Bubble */
+    .chat-container { margin: 15px 0; display: flex; flex-direction: column; gap: 10px; }
+    .chat-bubble { display: flex; gap: 10px; align-items: flex-start; animation: slideIn 0.5s ease-out; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    .chat-bubble.right { flex-direction: row-reverse; }
+    .chat-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: #DAB894; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .chat-message { background: white; padding: 10px 15px; border-radius: 15px; max-width: 70%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 0.85rem; line-height: 1.5; }
+    .chat-bubble.right .chat-message { background: #A7C4B8; color: white; }
+
+    /* Story Card Compact */
+    .story-compact { background: white; border-radius: 15px; padding: 15px; margin: 15px 0; box-shadow: 0 5px 15px rgba(139, 69, 19, 0.15); display: flex; gap: 15px; align-items: center; }
+    .story-gif { width: 120px; height: 120px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .story-content-compact { flex: 1; }
+    .story-content-compact h3 { font-family: 'Playfair Display', serif; color: #8B4513; font-size: 1.1rem; margin-bottom: 8px; }
+    .story-content-compact p { font-size: 0.8rem; line-height: 1.5; }
+
+    /* Service Grid Compact */
+    .service-grid-compact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+    .service-item { background: linear-gradient(135deg, #DAB894 0%, #C4A07A 100%); border-radius: 12px; padding: 15px 10px; text-align: center; color: white; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.2); transition: transform 0.3s ease; }
+    .service-item:hover { transform: translateY(-5px); }
+    .service-item i { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .service-item h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+    .service-item p { font-size: 0.7rem; color: rgba(255,255,255,0.9); }
+
+    /* Stats Compact */
+    .stats-compact { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
+    .stat-card { background: white; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1); }
+    .stat-number { font-size: 2rem; font-weight: bold; color: #8B4513; font-family: 'Playfair Display', serif; }
+    .stat-label { color: #6F4E37; font-size: 0.8rem; margin-top: 5px; }
+
+    /* Benefit Box */
+    .benefits-compact { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
+    .benefit-item { background: linear-gradient(135deg, #A7C4B8 0%, #8DB4A0 100%); border-radius: 12px; padding: 15px; color: white; text-align: center; }
+    .benefit-item i { font-size: 2rem; margin-bottom: 8px; }
+    .benefit-item h4 { font-size: 0.9rem; margin-bottom: 5px; }
+    .benefit-item p { font-size: 0.75rem; color: rgba(255,255,255,0.95); }
+
+    /* Insurance Services Grid */
+    .insurance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
+    .insurance-box { background: white; border-radius: 10px; padding: 12px 8px; text-align: center; box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1); border: 2px solid #DAB894; transition: all 0.3s ease; }
+    .insurance-box:hover { transform: scale(1.05); border-color: #8B4513; }
+    .insurance-box i { font-size: 1.8rem; color: #8B4513; margin-bottom: 5px; }
+    .insurance-box h5 { font-size: 0.75rem; color: #6F4E37; font-weight: 600; }
+
+    /* Contact Grid */
+    .contact-compact { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
+    .contact-box { background: white; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1); border: 2px solid #DAB894; }
+    .contact-box i { font-size: 2rem; color: #8B4513; margin-bottom: 8px; }
+    .contact-box h4 { font-size: 0.9rem; color: #6F4E37; margin-bottom: 5px; }
+    .contact-box a { color: #A7C4B8; text-decoration: none; font-weight: 500; font-size: 0.8rem; }
+    .contact-box p { font-size: 0.75rem; margin-top: 5px; }
+
+    /* Highlight Box */
+    .highlight-box { background: linear-gradient(135deg, #8B4513 0%, #6F4E37 100%); color: white; padding: 20px; border-radius: 15px; margin: 15px 0; text-align: center; }
+    .highlight-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 10px; }
+    .highlight-box p { font-size: 0.85rem; line-height: 1.6; color: white; }
+
+    /* Process Steps */
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
+    .step-item { text-align: center; }
+    .step-number { width: 50px; height: 50px; background: #A7C4B8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-size: 1.5rem; font-weight: bold; }
+    .step-item h5 { font-size: 0.8rem; color: #8B4513; margin-bottom: 3px; }
+    .step-item p { font-size: 0.7rem; color: #6F4E37; }
+
+    /* Navigation */
+    .nav-controls { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #6F4E37; color: white; }
+    .nav-btn { background: #A7C4B8; border: none; color: white; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
+    .nav-btn:hover:not(:disabled) { background: #8DB4A0; transform: scale(1.05);}
+    .nav-btn:disabled { background: #ccc; cursor: not-allowed; opacity: 0.5; }
+    .page-indicator { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; }
+
+    /* Investment Section */
+    .investment-box { background: white; border-radius: 15px; padding: 15px; margin: 15px 0; box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1); }
+    .investment-box h3 { font-family: 'Playfair Display', serif; color: #8B4513; font-size: 1.2rem; margin-bottom: 10px; text-align: center; }
+    .chart-placeholder { width: 100%; height: 150px; background: linear-gradient(to top, #A7C4B8 0%, #DAB894 50%, #8B4513 100%); border-radius: 10px; display: flex; align-items: flex-end; justify-content: space-around; padding: 10px; position: relative; }
+    .chart-bar { width: 15%; background: rgba(255,255,255,0.3); border-radius: 5px 5px 0 0; position: relative; animation: growBar 1s ease-out forwards; transform-origin: bottom; }
+    @keyframes growBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .chart-bar:nth-child(1) { height: 50%; }
+    .chart-bar:nth-child(2) { height: 70%; }
+    .chart-bar:nth-child(3) { height: 85%; }
+    .chart-bar:nth-child(4) { height: 100%; }
+    .chart-bar:nth-child(5) { height: 90%; }
+    .cta-button { background: white; color: #8B4513; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 1rem; display: inline-block; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.3s; margin: 10px; }
+    .cta-button:hover { transform: scale(1.05);}
+    .cta-button.whatsapp { background: #25D366; color: white; }
+  </style>
+</head>
+<body>
+  <div class="brochure-container">
+    <div class="slider-wrapper">
+      <div class="slider" id="slider">
+
+        <!-- PAGE 1: COVER -->
+        <div class="page cover-page">
+          <h1>🛡️ Secure Your Future</h1>
+          <p class="subtitle">Because life is unpredictable, but your family's security shouldn't be!</p>
+          <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" alt="Insurance Shield" class="cover-icon">
+          <div class="agent-info">
+            <p style="font-size: 1.3rem; font-weight: 600; margin-top: 20px;">Gagan Shah</p>
+            <p style="font-size: 1rem; margin-top: 5px;">Your Trusted Insurance Partner</p>
+            <p style="font-size: 0.9rem; margin-top: 5px;">⭐ 12+ Years of Excellence</p>
+            <p style="font-size: 0.85rem; margin-top: 10px;">📞 +91 98765 43210</p>
+          </div>
+        </div>
+
+        <!-- PAGE 2: WHY INSURANCE -->
+        <div class="page">
+          <h1>Why Insurance? Let Me Tell You! 💭</h1>
+          <div class="chat-container">
+            <div class="chat-bubble">
+              <div class="chat-avatar">😰</div>
+              <div class="chat-message">
+                <strong>Worried Client:</strong> "What if something happens to me? Who will take care of my family?"
+              </div>
+            </div>
+            <div class="chat-bubble right">
+              <div class="chat-avatar">👔</div>
+              <div class="chat-message">
+                <strong>Gagan Shah:</strong> "That's exactly why Term Insurance exists! ₹1 Crore coverage for just ₹15/day!"
+              </div>
+            </div>
+            <div class="chat-bubble">
+              <div class="chat-avatar">🤔</div>
+              <div class="chat-message">
+                <strong>Smart Thinker:</strong> "Medical bills are so expensive these days!"
+              </div>
+            </div>
+            <div class="chat-bubble right">
+              <div class="chat-avatar">👔</div>
+              <div class="chat-message">
+                <strong>Gagan Shah:</strong> "Health Insurance covers everything - surgery, hospitalization, even COVID! Cashless treatment at 10,000+ hospitals!"
+              </div>
+            </div>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/d7/4d/83/d74d83c0292145c852ed1a09076adb67.gif" alt="Family Protected" class="story-gif">
+            <div class="story-content-compact">
+              <h3>The Sharma Family Story 👨‍👩‍👧‍👦</h3>
+              <p>When Mr. Sharma had an accident, his ₹50 lakh term insurance saved his family. His children continued their education, his wife started a business. <strong>Insurance gave them hope!</strong></p>
+            </div>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/0e/3c/26/0e3c26989cb0c024d1c2a2e858e3518b.gif" alt="Medical Emergency" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Emergency Heart Surgery 🏥</h3>
+              <p>Priya's father needed ₹8 lakh surgery. Health insurance covered everything - zero out of pocket! <strong>Saved home, saved life!</strong></p>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <h3>⚡ Did You Know?</h3>
+            <p><strong>80% Indians are under-insured!</strong> Don't be one of them. Start today!</p>
+          </div>
+        </div>
+
+        <!-- PAGE 3: ALL INSURANCE SERVICES -->
+        <div class="page">
+          <h1>Complete Insurance Solutions 📋</h1>
+          <p style="text-align: center; margin-bottom: 15px; font-size: 0.9rem; color: #8B4513;"><strong>We Cover Every Aspect of Your Life!</strong></p>
+          <div class="insurance-grid">
+            <div class="insurance-box"><i class="fas fa-heartbeat"></i><h5>Health Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-shield-alt"></i><h5>Term Life</h5></div>
+            <div class="insurance-box"><i class="fas fa-car"></i><h5>Car Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-motorcycle"></i><h5>Bike Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-baby"></i><h5>Maternity</h5></div>
+            <div class="insurance-box"><i class="fas fa-child"></i><h5>Child Plans</h5></div>
+            <div class="insurance-box"><i class="fas fa-bus"></i><h5>Commercial Vehicle</h5></div>
+            <div class="insurance-box"><i class="fas fa-plane"></i><h5>Travel Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-home"></i><h5>Home Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-fire"></i><h5>Fire Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-briefcase"></i><h5>Business Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-user-injured"></i><h5>Accident Cover</h5></div>
+            <div class="insurance-box"><i class="fas fa-umbrella"></i><h5>Retirement Plans</h5></div>
+            <div class="insurance-box"><i class="fas fa-hospital"></i><h5>Critical Illness</h5></div>
+            <div class="insurance-box"><i class="fas fa-gas-pump"></i><h5>Fuel Station Insurance</h5></div>
+            <div class="insurance-box"><i class="fas fa-globe-asia"></i><h5>International Travel</h5></div>
+          </div>
+          <h2 style="text-align: center; margin-top: 20px;">Popular Services 🌟</h2>
+          <div class="service-grid-compact">
+            <div class="service-item"><i class="fas fa-shield-alt"></i><h4>Term Life</h4><p>Up to ₹2 Cr</p></div>
+            <div class="service-item"><i class="fas fa-heartbeat"></i><h4>Health</h4><p>Cashless Care</p></div>
+            <div class="service-item"><i class="fas fa-car"></i><h4>Vehicle</h4><p>Zero Dep</p></div>
+            <div class="service-item"><i class="fas fa-baby"></i><h4>Maternity</h4><p>Mother & Child</p></div>
+            <div class="service-item"><i class="fas fa-plane"></i><h4>Travel</h4><p>Worldwide</p></div>
+            <div class="service-item"><i class="fas fa-home"></i><h4>Property</h4><p>Complete Cover</p></div>
+          </div>
+          <div class="chat-container" style="margin-top: 15px;">
+            <div class="chat-bubble">
+              <div class="chat-avatar">🤷</div>
+              <div class="chat-message">
+                <strong>Confused Customer:</strong> "So many options! Which one do I need?"
+              </div>
+            </div>
+            <div class="chat-bubble right">
+              <div class="chat-avatar">👔</div>
+              <div class="chat-message">
+                <strong>Gagan Shah:</strong> "Don't worry! I'll analyze your needs and suggest the perfect combination. FREE consultation!"
+              </div>
+            </div>
+          </div>
+          <div style="background: white; padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1);">
+            <h4 style="color: #8B4513; text-align: center; margin-bottom: 10px; font-size: 1rem;">🤝 Trusted Partners</h4>
+            <p style="text-align: center; font-size: 0.8rem; line-height: 1.5;">TATA AIG • Star Health • HDFC ERGO • ICICI Lombard • New India • Bajaj Allianz • Max Life • SBI Life</p>
+          </div>
+        </div>
+
+        <!-- PAGE 4: INVESTMENT & WEALTH -->
+        <div class="page">
+          <h1>Grow Your Wealth 📈</h1>
+          <div class="investment-box">
+            <h3>Mutual Funds - Your Money Growing!</h3>
+            <div class="chart-placeholder">
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+            </div>
+            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #6F4E37;">
+              <strong>Average Returns: 12-15% annually</strong><br>
+              Better than FD! Let your money work for you!
+            </p>
+          </div>
+          <div class="chat-container">
+            <div class="chat-bubble">
+              <div class="chat-avatar">🏦</div>
+              <div class="chat-message">
+                <strong>Saver:</strong> "I only have FDs. Returns are just 6%..."
+              </div>
+            </div>
+            <div class="chat-bubble right">
+              <div class="chat-avatar">👔</div>
+              <div class="chat-message">
+                <strong>Gagan Shah:</strong> "Mutual Funds give 12-15%! Your ₹10,000/month becomes ₹1 Crore in 20 years!"
+              </div>
+            </div>
+            <div class="chat-bubble">
+              <div class="chat-avatar">😲</div>
+              <div class="chat-message">
+                <strong>Saver:</strong> "Really? That's amazing!"
+              </div>
+            </div>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/fe/a1/59/fea1599a7e6267f2f8c86f14b4e8be81.gif" alt="Money Growth" class="story-gif">
+            <div class="story-content-compact">
+              <h3>SIP Success Story 💰</h3>
+              <p>Rajesh invested ₹5,000/month in mutual funds for 15 years. Today he has ₹25 lakhs! <strong>Power of compounding!</strong></p>
+            </div>
+          </div>
+          <h2>Real Estate Investment 🏘️</h2>
+          <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1);">
+            <div style="display: flex; gap: 15px; align-items: center;">
+              <img src="https://i.pinimg.com/originals/8a/f4/1b/8af41b24e8f69c19554a6b0df2ca9e55.gif" alt="Real Estate" style="width: 100px; height: 100px; border-radius: 10px;">
+              <div>
+                <h4 style="color: #8B4513; margin-bottom: 5px; font-size: 1rem;">Property Investment Plans</h4>
+                <p style="font-size: 0.8rem; line-height: 1.5;">✓ Real Estate Investment Guidance<br>✓ Property Insurance<br>✓ Home Loan Protection<br>✓ Rental Income Security</p>
+              </div>
+            </div>
+          </div>
+          <div class="benefits-compact" style="margin-top: 15px;">
+            <div class="benefit-item"><i class="fas fa-chart-line"></i><h4>Wealth Growth</h4><p>12-15% Returns</p></div>
+            <div class="benefit-item"><i class="fas fa-piggy-bank"></i><h4>Tax Savings</h4><p>80C Benefits</p></div>
+            <div class="benefit-item"><i class="fas fa-building"></i><h4>Real Estate</h4><p>Property Plans</p></div>
+            <div class="benefit-item"><i class="fas fa-hand-holding-usd"></i><h4>SIP Plans</h4><p>Start ₹500/month</p></div>
+          </div>
+          <div class="highlight-box" style="margin-top: 15px;">
+            <h3>💡 Smart Investment Formula</h3>
+            <p><strong>Insurance + Mutual Funds + Real Estate = Secure Future!</strong><br>Let me create your personalized wealth plan!</p>
+          </div>
+        </div>
+
+        <!-- PAGE 5: ABOUT GAGAN SHAH -->
+        <div class="page">
+          <h1>About Gagan Shah 👔</h1>
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Professional" style="width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);">
+            <p style="font-size: 1.1rem; color: #8B4513; margin-top: 10px; font-weight: 600;">Your Trusted Insurance Partner Since 2013</p>
+          </div>
+          <div class="stats-compact">
+            <div class="stat-card"><div class="stat-number">1500+</div><div class="stat-label">Happy Clients</div></div>
+            <div class="stat-card"><div class="stat-number">2200+</div><div class="stat-label">Policies Issued</div></div>
+            <div class="stat-card"><div class="stat-number">98%</div><div class="stat-label">Claim Success</div></div>
+            <div class="stat-card"><div class="stat-number">12+</div><div class="stat-label">Years Experience</div></div>
+          </div>
+          <h2>Our Promise 🎯</h2>
+          <div class="benefits-compact">
+            <div class="benefit-item"><i class="fas fa-language"></i><h4>Simple Language</h4><p>No confusing jargon</p></div>
+            <div class="benefit-item"><i class="fas fa-user-check"></i><h4>Custom Plans</h4><p>Perfect for YOU</p></div>
+            <div class="benefit-item"><i class="fas fa-bolt"></i><h4>Fast Service</h4><p>Quick processing</p></div>
+            <div class="benefit-item"><i class="fas fa-headset"></i><h4>24/7 Support</h4><p>Always available</p></div>
+          </div>
+          <div class="story-compact" style="margin-top: 15px;">
+            <img src="https://i.pinimg.com/originals/5a/68/5e/5a685e43d72e4ebc5e861dd05d3c90c3.gif" alt="Customer Service" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Why Clients Trust Me 🤝</h3>
+              <p>"Gagan helped us during our toughest time. When my husband was hospitalized, he handled everything - claims, paperwork, hospital visits. He's not just an agent, he's family!" <strong>- Mrs. Sharma</strong></p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top: 15px;">
+            <h3>🏆 My Mission</h3>
+            <p>To ensure every family in Mysuru sleeps peacefully, knowing their future is secure. Your happiness is my success!</p>
+          </div>
+          <div style="background: white; padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1);">
+            <h4 style="color: #8B4513; text-align: center; margin-bottom: 10px; font-size: 1rem;">🎓 Certifications & Training</h4>
+            <p style="text-align: center; font-size: 0.8rem; line-height: 1.6;">
+              ✓ IRDA Certified Insurance Advisor<br>
+              ✓ Mutual Fund Distributor (ARN)<br>
+              ✓ 100+ Product Training Sessions<br>
+              ✓ Regular Industry Updates
+            </p>
+          </div>
+        </div>
+
+        <!-- PAGE 6: MORE SUCCESS STORIES -->
+        <div class="page">
+          <h1>Real Life Miracles 🌟</h1>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/1f/1d/14/1f1d14c3e9b4fa0a6c84b5f15bce35b1.gif" alt="Family" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Accident Recovery 🚗</h3>
+              <p>Rahul's car was totaled in an accident. Zero depreciation cover gave him a brand new car! <strong>Back on road in 3 days!</strong></p>
+            </div>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/8f/0d/6d/8f0d6d891ddfc1c0a2c25dc43e8b90c4.gif" alt="Education" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Dream Education 🎓</h3>
+              <p>Amit's child plan matured with ₹20 lakhs exactly when his daughter needed engineering fees. <strong>Dreams fulfilled!</strong></p>
+            </div>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/c3/b3/a7/c3b3a7c4e92b6e88debbf0b3c8c31c67.gif" alt="Retirement" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Golden Retirement 👴</h3>
+              <p>Mr. Patel receives ₹40,000 monthly pension. Now he travels India, living his dream! <strong>Financial freedom!</strong></p>
+            </div>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/39/04/39/39043903f1feaaa86bf1f5c6da29cff6.gif" alt="Business" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Business Rebuilt 🏪</h3>
+              <p>Fire destroyed Sunita's shop. Property insurance paid ₹12 lakhs. Shop reopened bigger & better! <strong>Never gave up!</strong></p>
+            </div>
+          </div>
+          <div class="chat-container" style="margin-top: 15px;">
+            <div class="chat-bubble">
+              <div class="chat-avatar">🤔</div>
+              <div class="chat-message">
+                <strong>Skeptic:</strong> "These stories sound too good to be true..."
+              </div>
+            </div>
+            <div class="chat-bubble right">
+              <div class="chat-avatar">👔</div>
+              <div class="chat-message">
+                <strong>Gagan Shah:</strong> "I have real client testimonials and claim settlement proofs! Call my clients yourself!"
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top: 15px;">
+            <h3>⚡ Your Success Story Awaits!</h3>
+            <p><strong>Don't wait for emergencies!</strong> Every day without insurance is a risk. Let's write YOUR success story today!</p>
+          </div>
+        </div>
+
+        <!-- PAGE 7: WHY CHOOSE US -->
+        <div class="page">
+          <h1>Why Choose Gagan Shah? ⭐</h1>
+          <div class="service-grid-compact">
+            <div class="service-item"><i class="fas fa-money-bill-wave"></i><h4>Best Prices</h4><p>Compare & Save</p></div>
+            <div class="service-item"><i class="fas fa-clipboard-check"></i><h4>Easy Process</h4><p>Minimal Paperwork</p></div>
+            <div class="service-item"><i class="fas fa-award"></i><h4>98% Settlement</h4><p>Quick Claims</p></div>
+            <div class="service-item"><i class="fas fa-phone-alt"></i><h4>24/7 Support</h4><p>Always Available</p></div>
+            <div class="service-item"><i class="fas fa-users"></i><h4>1500+ Clients</h4><p>Trusted Partner</p></div>
+            <div class="service-item"><i class="fas fa-file-contract"></i><h4>No Hidden Cost</h4><p>100% Transparent</p></div>
+          </div>
+          <div style="background: white; padding: 15px; border-radius: 12px; margin: 15px 0; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1);">
+            <h3 style="color: #8B4513; text-align: center; margin-bottom: 10px; font-size: 1.1rem;">💡 Shocking Facts!</h3>
+            <p style="font-size: 0.8rem; line-height: 1.8; text-align: center;">
+              ⚠️ <strong>80% Indians</strong> are under-insured<br>
+              📊 Age <strong>25-35</strong> is BEST for term insurance<br>
+              💰 <strong>₹1 Cr coverage</strong> = ₹15/day only!<br>
+              🏥 Medical inflation at <strong>15%/year</strong><br>
+              😢 <strong>1 in 4 families</strong> face crisis without insurance
+            </p>
+          </div>
+          <div class="story-compact">
+            <img src="https://i.pinimg.com/originals/9e/ab/85/9eab85d2088c9e89e1c1f6aaa01e24ce.gif" alt="Protection" class="story-gif">
+            <div class="story-content-compact">
+              <h3>Complete Protection 🛡️</h3>
+              <p>We don't just sell policies - we build relationships! From buying to claims to renewals, I'm with you at every step. <strong>Your peace of mind is my priority!</strong></p>
+            </div>
+          </div>
+          <h2 style="margin-top: 15px;">Our Service Excellence</h2>
+          <div class="benefits-compact">
+            <div class="benefit-item"><i class="fas fa-rocket"></i><h4>Quick Response</h4><p>Reply within 1 hour</p></div>
+            <div class="benefit-item"><i class="fas fa-shield-alt"></i><h4>Claim Support</h4><p>End-to-end help</p></div>
+            <div class="benefit-item"><i class="fas fa-chart-line"></i><h4>Free Reviews</h4><p>Annual policy check</p></div>
+            <div class="benefit-item"><i class="fas fa-gift"></i><h4>No Extra Cost</h4><p>Same as online!</p></div>
+          </div>
+          <div class="highlight-box" style="margin-top: 15px;">
+            <h3>🔥 Limited Time Offer!</h3>
+            <p><strong>FREE Insurance Health Check!</strong><br>Get your existing policies reviewed at no cost. Find gaps in coverage before it's too late!</p>
+          </div>
+        </div>
+
+        <!-- PAGE 8: CONTACT & CTA -->
+        <div class="page">
+          <h1>Let's Protect Your Future! 📱</h1>
+          <div class="contact-compact">
+            <div class="contact-box">
+              <i class="fas fa-phone-alt"></i>
+              <h4>Call Now</h4>
+              <a href="tel:+919876543210">+91 98765 43210</a>
+              <p>Available 24/7</p>
+            </div>
+            <div class="contact-box">
+              <i class="fas fa-envelope"></i>
+              <h4>Email</h4>
+              <a href="mailto:gaganshah@gmail.com">gaganshah@gmail.com</a>
+              <p>Response in 2 hours</p>
+            </div>
+            <div class="contact-box">
+              <i class="fab fa-whatsapp"></i>
+              <h4>WhatsApp</h4>
+              <a href="https://wa.me/919876543210">Chat Instantly</a>
+              <p>Fastest way!</p>
+            </div>
+            <div class="contact-box">
+              <i class="fas fa-map-marker-alt"></i>
+              <h4>Visit Office</h4>
+              <p style="color: #6F4E37; font-size: 0.75rem;">V6 Golden Nest<br>Siddaganga 2nd Stage<br>Jnanabharati, Mysuru</p>
+            </div>
+          </div>
+          <h2 style="text-align: center; margin-top: 20px;">How It Works? 🎯</h2>
+          <div class="process-steps">
+            <div class="step-item"><div class="step-number">1</div><h5>Contact Me</h5><p>Call/WhatsApp</p></div>
+            <div class="step-item"><div class="step-number">2</div><h5>Free Consult</h5><p>Understand needs</p></div>
+            <div class="step-item"><div class="step-number">3</div><h5>Best Quotes</h5><p>Compare plans</p></div>
+            <div class="step-item"><div class="step-number">4</div><h5>Get Protected</h5><p>Easy process</p></div>
+          </div>
+          <div style="text-align: center; margin-top: 20px;">
+            <img src="https://i.pinimg.com/originals/4d/96/b2/4d96b2e3e5f5c0c4e4c2e8c5e0b2e8c5.gif" alt="Success" style="width: 150px; height: 150px; border-radius: 15px;">
+          </div>
+          <div class="highlight-box" style="margin-top: 15px;">
+            <h3>⏰ Don't Wait for Tomorrow!</h3>
+            <p style="margin-bottom: 15px;"><strong>Every day without insurance is a day of risk!</strong><br>Secure your family's future RIGHT NOW!</p>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+              <a href="tel:+919876543210" class="cta-button">
+                <i class="fas fa-phone-alt"></i> Call Now
+              </a>
+              <a href="https://wa.me/919876543210" class="cta-button whatsapp">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+              </a>
+            </div>
+          </div>
+          <div style="background: white; padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 3px 10px rgba(139, 69, 19, 0.1);">
+            <h4 style="color: #8B4513; text-align: center; margin-bottom: 10px; font-size: 1rem;">🎁 Special Benefits for You!</h4>
+            <p style="font-size: 0.8rem; line-height: 1.8;">
+              ✓ <strong>FREE</strong> Insurance Health Checkup<br>
+              ✓ <strong>FREE</strong> Policy Review & Comparison<br>
+              ✓ <strong>FREE</strong> Financial Planning Session<br>
+              ✓ <strong>24/7</strong> Claim Assistance Support<br>
+              ✓ <strong>Best Rates</strong> - We compare 20+ insurers<br>
+              ✓ <strong>Lifetime Service</strong> - No extra charges ever!
+            </p>
+          </div>
+          <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #6F4E37 0%, #8B4513 100%); border-radius: 12px; text-align: center; color: white;">
+            <p style="font-size: 0.9rem; line-height: 1.6; color: white;">
+              <strong>Remember:</strong> Insurance is not an expense, it's an investment in peace of mind. Don't let your family struggle when you're not around. <strong>Act today, protect tomorrow!</strong>
+            </p>
+          </div>
+          <div style="margin-top: 20px; text-align: center; color: #6F4E37; border-top: 2px solid #DAB894; padding-top: 15px;">
+            <p style="font-size: 0.85rem; font-weight: 600;">Gagan Shah Insurance Services</p>
+            <p style="font-size: 0.75rem; margin-top: 5px;">Licensed IRDA Advisor | 12+ Years Excellence</p>
+            <p style="font-size: 0.75rem; margin-top: 5px;">📞 +91 98765 43210 | 📧 gaganshah@gmail.com</p>
+            <p style="font-size: 0.7rem; margin-top: 10px; color: #8B4513;">© 2025 All Rights Reserved | Serving Mysuru with Pride</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn" id="prevBtn" disabled>
+        <i class="fas fa-chevron-left"></i> Previous
+      </button>
+      <div class="page-indicator">
+        <span id="currentPage">1</span> / <span id="totalPages">8</span>
+      </div>
+      <button class="nav-btn" id="nextBtn">
+        Next <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+  <script>
+    const slider = document.getElementById('slider');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentPageSpan = document.getElementById('currentPage');
+    const totalPagesSpan = document.getElementById('totalPages');
+
+    let currentPage = 0;
+    const totalPages = 8;
+
+    totalPagesSpan.textContent = totalPages;
+
+    function updateSlider() {
+      slider.style.transform = `translateX(-${currentPage * 100}%)`;
+      currentPageSpan.textContent = currentPage + 1;
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = currentPage === totalPages - 1;
+      const pages = document.querySelectorAll('.page');
+      pages[currentPage].scrollTop = 0;
+    }
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        updateSlider();
+      }
+    });
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        updateSlider();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && currentPage > 0) {
+        currentPage--;
+        updateSlider();
+      } else if (e.key === 'ArrowRight' && currentPage < totalPages - 1) {
+        currentPage++;
+        updateSlider();
+      }
+    });
+
+    const actionButtons = document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"], a[href^="mailto:"]');
+    actionButtons.forEach(btn => {
+      btn.addEventListener('mouseenter', function() { this.style.transform = 'scale(1.05)'; });
+      btn.addEventListener('mouseleave', function() { this.style.transform = 'scale(1)'; });
+    });
+  </script>
+</body>
+</html>

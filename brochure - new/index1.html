@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagan Shah - Interactive Brochure Preview</title>
+    
+    <!-- External Libraries (from your original code) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- STYLES -->
+    <style>
+        /* Original Styles from Your Page */
+        body { font-family: 'Inter', sans-serif; }
+        .playfair { font-family: 'Playfair Display', serif; }
+        .bg-luxury-dark { background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 50%, #1a1a1a 100%); }
+        .bg-warm-brown { background-color: #8B4513; }
+        .bg-light-brown { background-color: #D2B48C; }
+        .bg-cream { background-color: #FDF5E6; }
+        .bg-charcoal { background-color: #36454F; }
+        .bg-coffee { background-color: #6F4E37; }
+        .text-warm-brown { color: #8B4513; }
+        .text-coffee { color: #6F4E37; }
+        .text-cream { color: #FDF5E6; }
+        .clean-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(139,69,19,0.05); }
+        .elegant-card { background: rgba(255,255,255,0.98); border: 1px solid rgba(139,69,19,0.08); }
+        .profile-frame { background: linear-gradient(45deg, #8B4513, #6F4E37); padding: 4px; border-radius: 50%; box-shadow: 0 10px 20px rgba(139,69,19,0.3); }
+        .profile-inner { background: #FDF5E6; border-radius: 50%; padding: 3px; }
+        .company-logo { width: 80px; height: 80px; background: white; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; color: #6F4E37; border: 2px solid #D2B48C; font-size: 0.7rem; }
+        .fun-stat { background: linear-gradient(135deg, rgba(139,69,19,0.05), rgba(111,78,55,0.05)); border-left: 4px solid #8B4513; padding: 1.5rem; border-radius: 10px; }
+        .pulse-icon { animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* NEW STYLES for Brochure Viewer */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #e9e9e9; /* A neutral background to highlight the brochure */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .brochure-viewer {
+            position: relative;
+            width: 90%;
+            max-width: 500px; /* Adjust this to make the brochure wider or narrower */
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
+        .brochure-slider-container {
+            width: 100%;
+            overflow: hidden;
+            aspect-ratio: 8.5 / 11; /* Standard brochure ratio */
+            border-radius: 8px;
+        }
+
+        .brochure-slider {
+            display: flex;
+            width: 400%; /* 100% per page * 4 pages */
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .brochure-page {
+            width: 25%; /* Each page takes up 1/4 of the slider width */
+            height: 100%;
+            flex-shrink: 0;
+            overflow-y: auto; /* Allow scrolling if content is too long for the page */
+            background-color: #FDF5E6;
+        }
+        
+        /* Custom scrollbar for a cleaner look */
+        .brochure-page::-webkit-scrollbar {
+            width: 5px;
+        }
+        .brochure-page::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .brochure-page::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+        .brochure-page::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .nav-button:disabled {
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+        }
+
+        #prev-btn {
+            left: -50px;
+        }
+        #next-btn {
+            right: -50px;
+        }
+        
+        .page-counter {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="brochure-viewer">
+        <button id="prev-btn" class="nav-button" disabled>&lt;</button>
+
+        <div class="brochure-slider-container">
+            <div class="brochure-slider">
+
+                <!-- ========== PAGE 1: COVER & INTRODUCTION ========== -->
+                <div class="brochure-page">
+                    <header class="bg-luxury-dark text-white py-12 px-4 relative overflow-hidden">
+                        <div class="container mx-auto max-w-6xl relative z-10">
+                            <div class="flex flex-col items-center justify-between gap-6">
+                                <div class="relative">
+                                    <div class="profile-frame p-1">
+                                        <div class="profile-inner p-0.5">
+                                            <div class="w-28 h-28 rounded-full bg-cream flex items-center justify-center">
+                                                <i class="fas fa-user-tie text-4xl text-coffee opacity-40"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center flex-1">
+                                    <h1 class="playfair text-4xl md:text-5xl font-bold mb-2 text-cream">Gagan Shah</h1>
+                                    <p class="text-lg md:text-xl text-light-brown font-semibold mb-2">Licensed Insurance Consultant</p>
+                                    <div class="w-24 h-0.5 bg-gradient-to-r from-warm-brown to-coffee mx-auto my-3"></div>
+                                    <p class="text-sm text-gray-400">Term • Vehicle • Medical Insurance</p>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <section class="py-10 px-4 bg-white">
+                        <div class="container mx-auto max-w-6xl">
+                            <div class="text-center mb-8">
+                                <h2 class="playfair text-3xl font-bold text-charcoal mb-3">Why Insurance? 🤔</h2>
+                                <p class="text-lg text-coffee font-medium max-w-3xl mx-auto">Because life is unpredictable, but your family's security shouldn't be!</p>
+                            </div>
+                            <div class="grid grid-cols-1 gap-6">
+                                <div class="elegant-card p-6 rounded-2xl text-center">
+                                    <div class="text-5xl mb-3 pulse-icon">🏥</div>
+                                    <h3 class="playfair text-xl font-bold text-charcoal mb-2">Healthcare Costs</h3>
+                                    <p class="text-base text-coffee">Medical expenses can drain your savings. Get covered before it's too late.</p>
+                                </div>
+                                <div class="elegant-card p-6 rounded-2xl text-center">
+                                    <div class="text-5xl mb-3 pulse-icon">👨‍👩‍👧‍👦</div>
+                                    <h3 class="playfair text-xl font-bold text-charcoal mb-2">Family First</h3>
+                                    <p class="text-base text-coffee">Your family deserves the best. Term insurance ensures they never have to compromise.</p>
+                                </div>
+                                <div class="elegant-card p-6 rounded-2xl text-center">
+                                    <div class="text-5xl mb-3 pulse-icon">🚗</div>
+                                    <h3 class="playfair text-xl font-bold text-charcoal mb-2">Road Warriors</h3>
+                                    <p class="text-base text-coffee">Don't let accidents steal your smile. We've got your wheels covered!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ========== PAGE 2: ABOUT & OUR MISSION ========== -->
+                <div class="brochure-page">
+                    <section class="py-10 px-4 bg-cream h-full">
+                        <div class="container mx-auto max-w-6xl">
+                            <div class="text-center mb-8">
+                                <h2 class="playfair text-3xl font-bold text-charcoal mb-3">About Gagan Shah</h2>
+                                <p class="text-base text-coffee max-w-3xl mx-auto">Over <span class="font-bold text-warm-brown text-xl">12+ years</span> of excellence, dedicated to securing your financial future.</p>
+                            </div>
+                             <div class="elegant-card rounded-xl clean-shadow p-4 mb-8">
+                                <h3 class="playfair text-lg font-bold text-charcoal mb-4 text-center">Policies Issued & Clients Served</h3>
+                                <div id="chartdiv" style="width: 100%; height: 200px;"></div>
+                            </div>
+                            <div class="text-center mb-8">
+                                <h2 class="playfair text-3xl font-bold text-charcoal mb-3">What We Do Best 🎯</h2>
+                            </div>
+                            <div class="space-y-4">
+                               <div class="elegant-card rounded-xl p-4 flex items-start gap-3">
+                                    <div class="bg-warm-brown text-white rounded-full p-3 text-xl flex-shrink-0">🛡️</div>
+                                    <div><h3 class="playfair text-lg font-bold text-charcoal">Simplified Insurance</h3><p class="text-coffee text-sm">We decode complex jargon into simple, understandable terms.</p></div>
+                               </div>
+                               <div class="elegant-card rounded-xl p-4 flex items-start gap-3">
+                                    <div class="bg-charcoal text-white rounded-full p-3 text-xl flex-shrink-0">💡</div>
+                                    <div><h3 class="playfair text-lg font-bold text-charcoal">Personalized Solutions</h3><p class="text-coffee text-sm">We customize plans that fit YOUR life perfectly.</p></div>
+                               </div>
+                               <div class="elegant-card rounded-xl p-4 flex items-start gap-3">
+                                    <div class="bg-coffee text-white rounded-full p-3 text-xl flex-shrink-0">⚡</div>
+                                    <div><h3 class="playfair text-lg font-bold text-charcoal">Lightning-Fast Service</h3><p class="text-coffee text-sm">Quick quotes, faster processing, and instant claim assistance.</p></div>
+                               </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ========== PAGE 3: DETAILED SERVICES ========== -->
+                <div class="brochure-page">
+                     <section class="py-10 px-4 bg-cream h-full">
+                        <div class="container mx-auto max-w-6xl">
+                            <div class="text-center mb-8">
+                                <h2 class="playfair text-3xl font-bold text-charcoal mb-3">Our Services 📋</h2>
+                                <p class="text-base text-coffee">Guidance for all your insurance needs.</p>
+                            </div>
+                            <div class="space-y-6">
+                                <!-- Term Insurance -->
+                                <div class="elegant-card rounded-xl clean-shadow overflow-hidden">
+                                    <div class="bg-warm-brown p-4 text-center"><h3 class="playfair text-xl font-bold text-white">Term Insurance</h3></div>
+                                    <div class="p-4"><ul class="space-y-2 text-coffee"><li class="flex items-start"><i class="fas fa-check-circle text-warm-brown mr-2 mt-1"></i><span class="text-sm">Coverage up to ₹2 Crore</span></li><li class="flex items-start"><i class="fas fa-check-circle text-warm-brown mr-2 mt-1"></i><span class="text-sm">Tax Benefits under 80C</span></li><li class="flex items-start"><i class="fas fa-check-circle text-warm-brown mr-2 mt-1"></i><span class="text-sm">Quick Claim Settlement</span></li></ul></div>
+                                </div>
+                                <!-- Vehicle Insurance -->
+                                <div class="elegant-card rounded-xl clean-shadow overflow-hidden">
+                                    <div class="bg-charcoal p-4 text-center"><h3 class="playfair text-xl font-bold text-white">Vehicle Insurance</h3></div>
+                                    <div class="p-4"><ul class="space-y-2 text-coffee"><li class="flex items-start"><i class="fas fa-check-circle text-charcoal mr-2 mt-1"></i><span class="text-sm">Comprehensive Coverage</span></li><li class="flex items-start"><i class="fas fa-check-circle text-charcoal mr-2 mt-1"></i><span class="text-sm">Zero Depreciation Add-on</span></li><li class="flex items-start"><i class="fas fa-check-circle text-charcoal mr-2 mt-1"></i><span class="text-sm">24/7 Roadside Assistance</span></li></ul></div>
+                                </div>
+                                <!-- Medical Insurance -->
+                                <div class="elegant-card rounded-xl clean-shadow overflow-hidden">
+                                    <div class="bg-coffee p-4 text-center"><h3 class="playfair text-xl font-bold text-white">Medical Insurance</h3></div>
+                                    <div class="p-4"><ul class="space-y-2 text-coffee"><li class="flex items-start"><i class="fas fa-check-circle text-coffee mr-2 mt-1"></i><span class="text-sm">Individual & Family Plans</span></li><li class="flex items-start"><i class="fas fa-check-circle text-coffee mr-2 mt-1"></i><span class="text-sm">Cashless Hospitalization</span></li><li class="flex items-start"><i class="fas fa-check-circle text-coffee mr-2 mt-1"></i><span class="text-sm">Critical Illness Coverage</span></li></ul></div>
+                                </div>
+                                <!-- Partners -->
+                                <div class="text-center pt-4">
+                                    <h4 class="playfair text-lg font-semibold text-charcoal mb-3">Our Trusted Partners</h4>
+                                    <div class="flex justify-center space-x-3">
+                                        <div class="company-logo !w-16 !h-16 !text-xs"><span>TATA AIG</span></div>
+                                        <div class="company-logo !w-16 !h-16 !text-xs"><span>STAR HEALTH</span></div>
+                                        <div class="company-logo !w-16 !h-16 !text-xs"><span>NEW INDIA</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ========== PAGE 4: KEY FACTS & CONTACT ========== -->
+                <div class="brochure-page">
+                    <section class="py-10 px-4 bg-white">
+                        <div class="container mx-auto max-w-6xl">
+                             <div class="elegant-card rounded-xl p-6 bg-gradient-to-br from-cream to-white mb-8">
+                                <h3 class="playfair text-xl font-bold text-charcoal mb-4 text-center"><i class="fas fa-lightbulb text-warm-brown mr-2"></i>Did You Know?</h3>
+                                <div class="space-y-3">
+                                    <div class="fun-stat !p-3"><p class="text-sm text-coffee"><span class="font-bold text-warm-brown text-lg">💰 80%</span> of Indians are under-insured.</p></div>
+                                    <div class="fun-stat !p-3"><p class="text-sm text-coffee"><span class="font-bold text-warm-brown text-lg">⏰ Age 25-35</span> is the BEST time to get term insurance.</p></div>
+                                    <div class="fun-stat !p-3"><p class="text-sm text-coffee"><span class="font-bold text-warm-brown text-lg">🎯 ₹1 Cr</span> coverage can cost less than your coffee budget!</p></div>
+                                </div>
+                            </div>
+                            <div class="text-center mb-6">
+                                <h2 class="playfair text-3xl font-bold text-charcoal mb-3">Get In Touch 📞</h2>
+                                <p class="text-base text-coffee">Ready to secure your future? Let's talk!</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="elegant-card p-4 rounded-xl text-center">
+                                    <i class="fas fa-phone-alt text-warm-brown text-2xl mb-2"></i>
+                                    <h3 class="playfair text-lg font-semibold text-charcoal">Phone</h3>
+                                    <a href="tel:+919876543210" class="text-coffee font-medium hover:text-warm-brown">+91 98765 43210</a>
+                                </div>
+                                <div class="elegant-card p-4 rounded-xl text-center">
+                                    <i class="fas fa-envelope text-charcoal text-2xl mb-2"></i>
+                                    <h3 class="playfair text-lg font-semibold text-charcoal">Email</h3>
+                                    <a href="mailto:gaganhshah@gmail.com" class="text-coffee font-medium hover:text-warm-brown break-all">gaganhshah@gmail.com</a>
+                                </div>
+                                <div class="elegant-card p-4 rounded-xl text-center">
+                                    <i class="fas fa-map-marker-alt text-coffee text-2xl mb-2"></i>
+                                    <h3 class="playfair text-lg font-semibold text-charcoal">Office</h3>
+                                    <p class="text-coffee font-medium text-sm">V6 Golden Nest Apartment, Jnanabharati</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="bg-luxury-dark text-white py-6 px-4">
+                         <p class="text-center text-gray-300 text-xs">&copy; 2025 Gagan Shah Insurance. All Rights Reserved.</p>
+                    </footer>
+                </div>
+
+            </div>
+        </div>
+
+        <button id="next-btn" class="nav-button">&gt;</button>
+
+        <div id="page-counter" class="page-counter">Page 1 of 4</div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // AmCharts Configuration for Page 2
+        am5.ready(function() {
+            var root = am5.Root.new("chartdiv");
+            root.setThemes([am5themes_Animated.new(root)]);
+            var chart = root.container.children.push(am5xy.XYChart.new(root, { panX: false, panY: false, wheelX: "none", wheelY: "none", paddingLeft: 0, paddingRight: 0 }));
+            var data = [
+                { year: "2015", clients: 120, policies: 180 }, { year: "2018", clients: 350, policies: 520 }, 
+                { year: "2021", clients: 680, policies: 1020 }, { year: "2025", clients: 1200, policies: 1800 }
+            ];
+            var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+            xRenderer.labels.template.setAll({ fontSize: 10 });
+            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, { categoryField: "year", renderer: xRenderer, tooltip: am5.Tooltip.new(root, {}) }));
+            xAxis.data.setAll(data);
+
+            var yRenderer = am5xy.AxisRendererY.new(root, {});
+            yRenderer.labels.template.setAll({ fontSize: 10 });
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, { renderer: yRenderer }));
+            
+            function createSeries(name, field, color) {
+                var series = chart.series.push(am5xy.ColumnSeries.new(root, { name: name, xAxis: xAxis, yAxis: yAxis, valueYField: field, categoryXField: "year", tooltip: am5.Tooltip.new(root, { labelText:"{name} in {categoryX}: {valueY}" }) }));
+                series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0, fill: am5.color(color), width: am5.percent(80) });
+                series.data.setAll(data);
+                series.appear(1000);
+            }
+            createSeries("Clients", "clients", 0x8B4513);
+            createSeries("Policies", "policies", 0x6F4E37);
+            chart.appear(1000, 100);
+        });
+
+        // Brochure Navigation Logic
+        const slider = document.querySelector('.brochure-slider');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageCounter = document.getElementById('page-counter');
+        
+        let currentPage = 0;
+        const totalPages = 4;
+
+        function updateBrochureState() {
+            // Move the slider
+            slider.style.transform = `translateX(-${currentPage * (100 / totalPages)}%)`;
+
+            // Update page counter
+            pageCounter.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+
+            // Enable/disable buttons
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updateBrochureState();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                updateBrochureState();
+            }
+        });
+        
+        // Initial setup
+        updateBrochureState();
+
+    </script>
+</body>
+</html>

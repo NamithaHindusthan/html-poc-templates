@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagan Shah - Premium Insurance Consultant</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AmCharts -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .playfair { font-family: 'Playfair Display', serif; }
+        
+        /* Professional Brown Theme */
+        .bg-luxury-dark { background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 50%, #1a1a1a 100%); }
+        .bg-warm-brown { background-color: #8B4513; }
+        .bg-light-brown { background-color: #D2B48C; }
+        .bg-cream { background-color: #FDF5E6; }
+        .bg-charcoal { background-color: #36454F; }
+        .bg-coffee { background-color: #6F4E37; }
+        
+        .text-warm-brown { color: #8B4513; }
+        .text-coffee { color: #6F4E37; }
+        .text-cream { color: #FDF5E6; }
+        
+        /* Clean shadows */
+        .clean-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(139,69,19,0.05); }
+        .elegant-card { 
+            background: rgba(255,255,255,0.98); 
+            border: 1px solid rgba(139,69,19,0.08);
+        }
+        
+        /* Smooth animations */
+        .hover-lift { 
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        .hover-lift:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+        }
+        
+        /* Professional profile styling */
+        .profile-frame {
+            background: linear-gradient(45deg, #8B4513, #6F4E37);
+            padding: 4px;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(139,69,19,0.3);
+        }
+        
+        .profile-inner {
+            background: #FDF5E6;
+            border-radius: 50%;
+            padding: 3px;
+        }
+        
+        /* Company logos */
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6F4E37;
+            border: 2px solid #D2B48C;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+        }
+        
+        .company-logo:hover {
+            transform: scale(1.05);
+            border-color: #8B4513;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 90vw;
+        }
+        
+        .notification.show { transform: translateX(0); }
+        .notification.success { background: linear-gradient(135deg, #10B981, #059669); }
+        .notification.error { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .company-logo { width: 70px; height: 70px; font-size: 0.6rem; }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Header Section -->
+    <header class="bg-luxury-dark text-white py-16 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-32 h-32 border-2 border-light-brown rounded-full"></div>
+            <div class="absolute bottom-10 right-10 w-24 h-24 border border-light-brown rounded-full"></div>
+        </div>
+        
+        <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="text-center lg:text-left flex-1">
+                    <h1 class="playfair text-4xl md:text-6xl lg:text-7xl font-bold mb-4 text-cream">Gagan Shah</h1>
+                    <p class="text-xl md:text-2xl text-light-brown font-semibold mb-3">Licensed Insurance Consultant</p>
+                    <p class="text-lg md:text-xl text-gray-300 mb-6">Your Trusted Partner in Financial Security</p>
+                    <div class="w-24 h-0.5 bg-gradient-to-r from-warm-brown to-coffee mx-auto lg:mx-0 mb-4"></div>
+                    <p class="text-base md:text-lg text-gray-400">Term • Vehicle • Medical Insurance Specialist</p>
+                    
+                    <!-- Mobile Quick Actions -->
+                    <div class="flex justify-center lg:justify-start gap-4 mt-6 md:hidden">
+                        <a href="tel:+919876543210" class="bg-warm-brown p-3 rounded-full hover:bg-opacity-80 transition-all">
+                            <i class="fas fa-phone text-white"></i>
+                        </a>
+                        <a href="mailto:gaganhshah@gmail.com" class="bg-coffee p-3 rounded-full hover:bg-opacity-80 transition-all">
+                            <i class="fas fa-envelope text-white"></i>
+                        </a>
+                        <a href="https://wa.me/919876543210" class="bg-green-600 p-3 rounded-full hover:bg-opacity-80 transition-all">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile Image -->
+                <div class="relative group">
+                    <div class="profile-frame">
+                        <div class="profile-inner">
+                            <div class="w-36 h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 rounded-full bg-cream flex items-center justify-center overflow-hidden cursor-pointer relative">
+                                <img id="profileImage" src="" alt="Gagan Shah" class="w-full h-full object-cover rounded-full hidden">
+                                <div id="uploadPrompt" class="text-center p-4">
+                                    <i class="fas fa-user-tie text-3xl md:text-4xl text-coffee opacity-60 mb-2"></i>
+                                    <p class="text-coffee text-xs md:text-sm font-medium">Upload Photo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="imageUpload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <div class="absolute -bottom-1 -right-1 bg-warm-brown rounded-full p-2 shadow-lg">
+                        <i class="fas fa-camera text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contact Information -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto max-w-6xl px-4">
+            <div class="text-center mb-10">
+                <h2 class="playfair text-3xl md:text-4xl font-bold text-charcoal mb-4">Get In Touch</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-warm-brown to-coffee mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="elegant-card p-6 rounded-xl clean-shadow hover-lift text-center">
+                    <div class="bg-warm-brown w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-phone-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="playfair text-xl font-semibold text-charcoal mb-2">Phone</h3>
+                    <a href="tel:+919876543210" class="text-coffee text-lg font-medium hover:text-warm-brown transition-colors">+91 98765 43210</a>
+                    <p class="text-gray-600 text-sm mt-2">Available 9 AM - 8 PM</p>
+                </div>
+                
+                <div class="elegant-card p-6 rounded-xl clean-shadow hover-lift text-center">
+                    <div class="bg-charcoal w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-white text-xl"></i>
+                    </div>
+                    <h3 class="playfair text-xl font-semibold text-charcoal mb-2">Email</h3>
+                    <a href="mailto:gaganhshah@gmail.com" class="text-coffee text-lg font-medium hover:text-warm-brown transition-colors break-all">gaganhshah@gmail.com</a>
+                    <p class="text-gray-600 text-sm mt-2">Quick Response Guaranteed</p>
+                </div>
+                
+                <div class="elegant-card p-6 rounded-xl clean-shadow hover-lift text-center">
+                    <div class="bg-coffee w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="playfair text-xl font-semibold text-charcoal mb-2">Office</h3>
+                    <p class="text-coffee text-lg font-medium leading-relaxed">Gide Nest Apartment<br><span class="text-base">Near Nangar Jananbharati</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-16 px-4 bg-cream">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="playfair text-3xl md:text-4xl font-bold text-charcoal mb-4">About Gagan Shah</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-warm-brown to-coffee mx-auto mb-6"></div>
+                <p class="text-lg md:text-xl text-coffee max-w-3xl mx-auto leading-relaxed">
+                    Over 12 years of excellence in insurance consultancy, dedicated to securing your family's financial future 
+                    through personalized solutions from India's most trusted providers.
+                </p>
+            </div>
+            
+            <div class="elegant-card rounded-xl clean-shadow p-8">
+                <h3 class="playfair text-2xl font-bold text-charcoal mb-6 text-center">Professional Excellence</h3>
+                <div id="chartdiv" style="width: 100%; height: 300px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insurance Services -->
+    <section class="py-16 px-4 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="playfair text-3xl md:text-4xl font-bold text-charcoal mb-4">Insurance Services</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-warm-brown to-coffee mx-auto mb-6"></div>
+                <p class="text-lg text-coffee">Expert guidance for Term, Vehicle & Medical Insurance</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Term Insurance -->
+                <div class="elegant-card rounded-xl clean-shadow hover-lift overflow-hidden">
+                    <div class="bg-warm-brown p-6 text-center">
+                        <div class="bg-white bg-opacity-20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="playfair text-2xl font-bold text-white mb-2">Term Insurance</h3>
+                        <p class="text-cream opacity-90">Maximum Protection, Minimum Premium</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h4 class="playfair text-lg font-semibold text-charcoal mb-3">Trusted Partners</h4>
+                            <div class="flex justify-center space-x-3 mb-4">
+                                <div class="company-logo">
+                                    <i class="fas fa-building text-xl text-warm-brown mb-1"></i>
+                                    <span>TATA AIG</span>
+                                </div>
+                                <div class="company-logo">
+                                    <i class="fas fa-star text-xl text-warm-brown mb-1"></i>
+                                    <span>STAR HEALTH</span>
+                                </div>
+                                <div class="company-logo">
+                                    <i class="fas fa-flag text-xl text-warm-brown mb-1"></i>
+                                    <span>NEW INDIA</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-3 text-coffee mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-warm-brown mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Coverage up to ₹2 Crore</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-warm-brown mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Tax Benefits under 80C</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-warm-brown mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Flexible Payment Terms</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-warm-brown mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Quick Claim Settlement</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-warm-brown text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all consultation-btn" data-service="Term Insurance">
+                            Book Consultation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vehicle Insurance -->
+                <div class="elegant-card rounded-xl clean-shadow hover-lift overflow-hidden">
+                    <div class="bg-charcoal p-6 text-center">
+                        <div class="bg-white bg-opacity-20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-car text-white text-2xl"></i>
+                        </div>
+                        <h3 class="playfair text-2xl font-bold text-white mb-2">Vehicle Insurance</h3>
+                        <p class="text-cream opacity-90">Complete Auto Protection</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h4 class="playfair text-lg font-semibold text-charcoal mb-3">Trusted Partners</h4>
+                            <div class="flex justify-center space-x-3 mb-4">
+                                <div class="company-logo">
+                                    <i class="fas fa-building text-xl text-charcoal mb-1"></i>
+                                    <span>TATA AIG</span>
+                                </div>
+                                <div class="company-logo">
+                                    <i class="fas fa-star text-xl text-charcoal mb-1"></i>
+                                    <span>STAR HEALTH</span>
+                                </div>
+                                <div class="company-logo">
+                                    <i class="fas fa-flag text-xl text-charcoal mb-1"></i>
+                                    <span>NEW INDIA</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="font-semibold text-charcoal mb-2">Vehicle Types:</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium">🚗 Car</span>
+                                <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium">🏍️ 2-Wheeler</span>
+                                <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium">🚐 4-Wheeler</span>
+                                <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium">🚛 Commercial</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-3 text-coffee mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-charcoal mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Comprehensive Coverage</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-charcoal mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Zero Depreciation Add-on</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-charcoal mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">24/7 Roadside Assistance</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-charcoal text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all consultation-btn" data-service="Vehicle Insurance">
+                            Book Consultation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Medical Insurance -->
+                <div class="elegant-card rounded-xl clean-shadow hover-lift overflow-hidden">
+                    <div class="bg-coffee p-6 text-center">
+                        <div class="bg-white bg-opacity-20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-heartbeat text-white text-2xl"></i>
+                        </div>
+                        <h3 class="playfair text-2xl font-bold text-white mb-2">Medical Insurance</h3>
+                        <p class="text-cream opacity-90">Complete Healthcare Security</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h4 class="playfair text-lg font-semibold text-charcoal mb-3">Trusted Partners</h4>
+                            <div class="flex justify-center space-x-3 mb-4">
+                                <div class="company-logo">
+                                    <i class="fas fa-building text-xl text-coffee mb-1"></i>
+                                    <span>TATA AIG</span>
+                                </div>
+                                <div class="company-logo">
+                                    <i class="fas fa-star text-xl text-coffee mb-1"></i>
+                                    <span>STAR HEALTH</span>
+                                </div>
+                                <div class="company-logo">
+                                    <i class="fas fa-flag text-xl text-coffee mb-1"></i>
+                                    <span>NEW INDIA</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-3 text-coffee mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-coffee mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Individual & Family Plans</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-coffee mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Cashless Hospitalization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-coffee mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Pre & Post Hospitalization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-coffee mr-3 mt-1 flex-shrink-0"></i>
+                                <span class="text-sm">Critical Illness Coverage</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-coffee text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all consultation-btn" data-service="Medical Insurance">
+                            Book Consultation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consultation Form -->
+    <section class="py-16 px-4 bg-cream">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-10">
+                <h2 class="playfair text-3xl md:text-4xl font-bold text-charcoal mb-4">Book Your Consultation</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-warm-brown to-coffee mx-auto mb-6"></div>
+                <p class="text-lg text-coffee">Schedule a free consultation to discuss your insurance needs</p>
+            </div>
+            
+            <div class="elegant-card rounded-xl clean-shadow p-8">
+                <form id="consultationForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-charcoal font-semibold">First Name *</label>
+                        <input type="text" name="firstName" required class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-charcoal font-semibold">Last Name *</label>
+                        <input type="text" name="lastName" required class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-charcoal font-semibold">Email Address *</label>
+                        <input type="email" name="email" required class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-charcoal font-semibold">Phone Number *</label>
+                        <input type="tel" name="phone" required class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-charcoal font-semibold">Insurance Type *</label>
+                        <select name="insuranceType" id="insuranceType" required class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                            <option value="">Select Insurance Type</option>
+                            <option value="Term Insurance">Term Insurance</option>
+                            <option value="Vehicle Insurance">Vehicle Insurance</option>
+                            <option value="Medical Insurance">Medical Insurance</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-2" id="vehicleTypeDiv" style="display: none;">
+                        <label class="text-charcoal font-semibold">Vehicle Type</label>
+                        <select name="vehicleType" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                            <option value="">Select Vehicle Type</option>
+                            <option value="Car">🚗 Car</option>
+                            <option value="2-Wheeler">🏍️ 2-Wheeler (Bike/Scooter)</option>
+                            <option value="4-Wheeler">🚐 4-Wheeler (SUV/Jeep)</option>
+                            <option value="Commercial Vehicle">🚛 Commercial Vehicle</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="text-charcoal font-semibold">Preferred Date & Time</label>
+                        <input type="datetime-local" name="preferredDateTime" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white">
+                    </div>
+                    
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="text-charcoal font-semibold">Your Message</label>
+                        <textarea name="message" rows="4" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-warm-brown focus:border-transparent bg-white" placeholder="Tell me about your insurance requirements..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="md:col-span-2 bg-warm-brown text-white py-4 rounded-lg font-bold text-lg hover:bg-opacity-90 transition-all transform hover:scale-105" id="submitBtn">
+                        <i class="fas fa-paper-plane mr-3"></i>Send WhatsApp Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-luxury-dark text-white py-12 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2">
+                    <h3 class="playfair text-2xl font-bold mb-4 text-cream">Gagan Shah Insurance</h3>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        Your trusted insurance consultant specializing in Term Life, Vehicle, and Medical Insurance. 
+                        Partnering with TATA AIG, Star Health, and New India Assurance for your complete financial security.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://wa.me/919876543210" class="w-10 h-10 bg-warm-brown rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </a>
+                        <a href="tel:+919876543210" class="w-10 h-10 bg-warm-brown rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                            <i class="fas fa-phone text-white"></i>
+                        </a>
+                        <a href="mailto:gaganhshah@gmail.com" class="w-10 h-10 bg-warm-brown rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                            <i class="fas fa-envelope text-white"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="playfair text-xl font-semibold mb-4 text-cream">Contact Info</h4>
+                    <div class="space-y-2 text-gray-300 text-sm">
+                        <p><i class="fas fa-phone text-light-brown mr-2"></i>+91 98765 43210</p>
+                        <p><i class="fas fa-envelope text-light-brown mr-2"></i>gaganhshah@gmail.com</p>
+                        <p><i class="fas fa-map-marker-alt text-light-brown mr-2"></i>V6 Golden Nest Apartment<br>Near Siddaganga 2nd Stage, Jnanabharati , Bengaluru</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p class="text-gray-300">&copy; 2025 Gagan Shah Insurance Services. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/919876543210?text=Hi%20Gagan,%20I%20need%20help%20with%20insurance" 
+       class="fixed bottom-6 right-6 bg-green-500 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50">
+        <i class="fab fa-whatsapp text-white text-2xl"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+You are an expert software architect and full-stack developer.  
+I want to build a complete production-ready Insurance Broker Platform with:
+
+- Backend: Python (FastAPI)
+- Database: PostgreSQL
+- Frontend: React (TailwindCSS + shadcn/ui components)
+- File Storage: MinIO (for secure storage of documents like Aadhar, PAN, Photos, Insurance Docs)
+- Authentication: JWT-based
+- Deployment: Cloud-ready, scalable, CI/CD enabled
+
+There are 4 roles in the system:
+1. Super Admin → full control, manages admins, organizations, users, and system-wide analytics.
+2. Admin → reports to Super Admin, manages users and policies, handles claims, processes payments, and generates reports.
+3. Organization Owner (Sub-Agent) → owns a company/org, can onboard users (clients) under them, view their policies, claims, and payments, but cannot directly sell insurance.
+4. Client/User → main customer, can purchase policies (health, life, vehicle, general), make payments, file claims, and receive notifications.
+
+---
+
+## 🗄 Database Schema  
+Design PostgreSQL tables with **table name, column names, data types, constraints, and purpose**.
+
+### 1. users
+- id (UUID, PK)
+- full_name (VARCHAR, 150)
+- email (VARCHAR, unique, not null)
+- phone (VARCHAR, 20)
+- password_hash (TEXT)
+- role_id (UUID, FK → roles.id)
+- organization_id (UUID, FK → organizations.id, nullable if independent user)
+- created_at (TIMESTAMP, default now())
+- updated_at (TIMESTAMP)
+
+### 2. roles
+- id (UUID, PK)
+- name (ENUM: 'super_admin', 'admin', 'organization_owner', 'client')
+- description (TEXT)
+
+### 3. organizations
+- id (UUID, PK)
+- name (VARCHAR, 150)
+- owner_id (UUID, FK → users.id)
+- created_at (TIMESTAMP)
+- updated_at (TIMESTAMP)
+
+### 4. user_hierarchy
+- id (UUID, PK)
+- manager_id (UUID, FK → users.id)   -- e.g., admin or super admin
+- subordinate_id (UUID, FK → users.id) -- e.g., organization owner, client
+- created_at (TIMESTAMP, default now())
+
+### 5. policies (master)
+- id (UUID, PK)
+- policy_type (ENUM: 'health', 'life', 'vehicle', 'general')
+- name (VARCHAR, 150)
+- description (TEXT)
+- created_at (TIMESTAMP)
+
+### 6. health_policies
+- id (UUID, PK, FK → policies.id)
+- coverage_amount (NUMERIC)
+- hospital_network (TEXT)
+
+### 7. life_policies
+- id (UUID, PK, FK → policies.id)
+- maturity_period (INT)
+- nominee_name (VARCHAR, 100)
+- nominee_relation (VARCHAR, 50)
+
+### 8. vehicle_policies
+- id (UUID, PK, FK → policies.id)
+- vehicle_number (VARCHAR, 20)
+- coverage_amount (NUMERIC)
+- expiry_date (DATE)
+
+### 9. general_policies
+- id (UUID, PK, FK → policies.id)
+- coverage_details (TEXT)
+- risk_category (VARCHAR, 50)
+
+### 10. claims
+- id (UUID, PK)
+- user_id (UUID, FK → users.id)
+- policy_id (UUID, FK → policies.id)
+- claim_amount (NUMERIC)
+- claim_status (ENUM: 'pending', 'approved', 'rejected', 'under_review')
+- filed_date (TIMESTAMP)
+- processed_date (TIMESTAMP, nullable)
+
+### 11. payments
+- id (UUID, PK)
+- user_id (UUID, FK → users.id)
+- policy_id (UUID, FK → policies.id)
+- amount (NUMERIC)
+- payment_date (TIMESTAMP)
+- status (ENUM: 'pending', 'completed', 'failed')
+
+### 12. notifications
+- id (UUID, PK)
+- user_id (UUID, FK → users.id)
+- title (VARCHAR, 150)
+- message (TEXT)
+- is_read (BOOLEAN, default false)
+- created_at (TIMESTAMP)
+
+### 13. documents
+- id (UUID, PK)
+- user_id (UUID, FK → users.id)
+- doc_type (ENUM: 'aadhar', 'pan', 'photo', 'insurance_doc', 'other')
+- file_url (TEXT from MinIO)
+- uploaded_at (TIMESTAMP)
+
+### 14. analytics
+- id (UUID, PK)
+- report_type (ENUM: 'monthly', 'yearly')
+- data (JSONB)
+- generated_at (TIMESTAMP)
+
+### 15. audit_logs
+- id (UUID, PK)
+- user_id (UUID, FK → users.id)
+- action (VARCHAR, 150)
+- description (TEXT)
+- timestamp (TIMESTAMP)
+
+---
+
+## ⚙️ Backend APIs (FastAPI)
+Design endpoints with role-based access.
+
+- **Auth**: `/auth/register`, `/auth/login`, `/auth/logout`, `/auth/refresh`
+- **Users**: `/users/create`, `/users/{id}`, `/users/update/{id}`, `/users/delete/{id}`
+- **Roles**: `/roles/list`
+- **Organizations**: `/organizations/create`, `/organizations/{id}/users`
+- **Policies**: `/policies/create`, `/policies/{id}`, `/policies/assign/{user_id}`
+- **Claims**: `/claims/create`, `/claims/{id}/approve`, `/claims/{id}/reject`
+- **Payments**: `/payments/initiate`, `/payments/status/{id}`
+- **Notifications**: `/notifications/user/{id}`, `/notifications/send`
+- **Documents**: `/documents/upload`, `/documents/{user_id}`
+- **Analytics**: `/analytics/monthly`, `/analytics/yearly`
+- **Audit Logs**: `/audit/logs`
+
+---
+
+## 🎨 Frontend Dashboards (React + TailwindCSS)
+
+### 1. Super Admin Dashboard
+- Sidebar: Admins, Organizations, Analytics, Audit Logs
+- Pages:
+  - Manage Admins
+  - Manage Organizations
+  - System Analytics (monthly/yearly)
+  - Audit Logs
+- APIs: `/users`, `/organizations`, `/analytics`, `/audit/logs`
+
+### 2. Admin Dashboard
+- Sidebar: Users, Policies, Claims, Payments, Reports
+- Pages:
+  - User Management
+  - Policy Assignment
+  - Claims (Approve/Reject)
+  - Payment History
+  - Reports
+- APIs: `/users`, `/policies`, `/claims`, `/payments`
+
+### 3. Organization Owner Dashboard
+- Sidebar: My Users, Policies, Payments, Notifications
+- Pages:
+  - View Users in Organization
+  - View Policies Assigned
+  - Payment Status
+  - Send Notifications
+- APIs: `/organizations/{id}/users`, `/policies`, `/notifications`
+
+### 4. Client/User Dashboard
+- Sidebar: My Policies, Claims, Payments, Documents, Notifications
+- Pages:
+  - View Active Policies
+  - Buy New Policy
+  - File a Claim
+  - Make Payments
+  - Upload Documents
+  - Notifications
+- APIs: `/policies/{id}`, `/claims`, `/payments`, `/documents`, `/notifications`
+
+---
+
+## 🔄 Role Interaction & Workflow
+- Super Admin → creates Admins & Organizations.
+- Admin → manages Clients (direct or via Organizations), assigns policies, processes claims/payments.
+- Organization Owner → manages Users within their org, views policy/payment/claim info.
+- Client/User → purchases policies, makes payments, files claims, uploads documents.
+- Notifications → flow between Admins and Users.
+- Payments → recorded against Users + Policies.
+- Documents → securely stored via MinIO.
+
+---
+
+## ☁️ Deployment & Scaling
+- Backend (FastAPI): Deploy on AWS/GCP/Azure with Docker + Gunicorn + Nginx
+- PostgreSQL: Managed DB (RDS/CloudSQL) or self-hosted with backups
+- Frontend (React): Deploy on Vercel/Netlify or Docker container
+- File Storage: MinIO (self-hosted S3) or AWS S3
+- CI/CD: GitHub Actions + Docker + Cloud deployment pipeline
+- Security: JWT, HTTPS, encrypted data at rest, role-based access, audit logs.
+

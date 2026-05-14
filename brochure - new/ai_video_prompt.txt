@@ -1,0 +1,192 @@
+🎬 MAIN PROMPT FOR AI VIDEO GENERATOR
+Style: Vivid 2D illustration animation, iconic graphic design, bold colors, modern flat design with smooth transitions, warm and trustworthy aesthetic
+Duration: 45-60 seconds
+Aspect Ratio: 16:9 (landscape) or 9:16 (vertical for social media)
+
+📝 SCENE-BY-SCENE BREAKDOWN
+Scene 1 (0-5 seconds)
+Visual: Animated title card with shield icon transforming into an umbrella protecting a happy illustrated family
+Text Overlay: "Secure Your Future with Gagan Shah"
+Style: Vibrant orange and blue gradient background, smooth morph animation
+Music: Uplifting, confident piano intro
+Scene 2 (5-12 seconds)
+Visual: Illustrated clock ticking backwards, then family silhouettes aging forward with protective shield around them
+Text Overlay: "12+ Years of Excellence | 1500+ Happy Families Protected"
+Style: Timeline animation with icons popping up - house, car, family, medical cross
+Narration/Text: "Because life is unpredictable, but your family's security shouldn't be"
+Scene 3 (12-22 seconds)
+Visual: Split screen showing three quick success story vignettes:
+
+Left: Illustrated family receiving money (₹50L term insurance)
+Center: Hospital scene with heart monitor going from critical to stable
+Right: Car being repaired with checkmark animation
+Text Overlay: "Real Protection. Real Results."
+Style: Bright, hopeful colors - green for success, blue for trust
+Animation: Quick 3-second montage per story with smooth transitions
+
+Scene 4 (22-35 seconds)
+Visual: Circular icons expanding outward from center showing different insurance types:
+
+Term Insurance (family under umbrella)
+Medical Insurance (stethoscope + heart)
+Vehicle Insurance (car with shield)
+Child Plans (graduation cap)
+Retirement (rocking chair with sun)
+Text Overlay: "Complete Protection for Every Stage of Life"
+Style: Clean infographic style, icons rotate and glow
+Colors: Each category has distinct color coding
+
+Scene 5 (35-45 seconds)
+Visual: Shocking statistics animated as bold numbers appearing:
+
+"80% Indians Under-Insured" (red warning)
+"₹1 Cr Coverage = Less than Your Coffee Budget" (coffee cup morphing into shield)
+"15% Medical Inflation Yearly" (graph arrow shooting up)
+Text Overlay: "Don't Wait. Protect Today!"
+Style: Dynamic number animations, urgent but not scary
+Colors: Red, yellow, orange for attention
+
+Scene 6 (45-55 seconds)
+Visual: Illustrated phone with contact details appearing elegantly:
+
+Phone icon with number
+Email icon
+WhatsApp icon
+Location pin with address
+All icons floating and glowing
+Text Overlay:
+"Call: +91 98765 43210
+WhatsApp Us Anytime
+Visit: Mysuru, Karnataka"
+Style: Professional yet approachable, pulsing call-to-action button
+
+Scene 7 (55-60 seconds)
+Visual: Gagan Shah's name in bold with trust badges appearing:
+
+"98% Claim Settlement"
+"24/7 Support"
+"Licensed Consultant"
+Family illustration in background with protective glow
+Text Overlay: "Your Trusted Insurance Partner - Gagan Shah"
+Style: Confident ending with logo reveal
+Music: Crescendo to positive resolution
+
+
+🎨 DETAILED STYLE SPECIFICATIONS
+Color Palette:
+
+Primary: Deep Blue (#1E3A8A) - Trust & Security
+Secondary: Vibrant Orange (#F97316) - Energy & Action
+Accent: Emerald Green (#10B981) - Success & Growth
+Supporting: Warm Yellow (#FBBF24) - Optimism
+Background: Clean White (#FFFFFF) with soft gradients
+
+Illustration Style:
+
+Flat 2D design with subtle shadows
+Rounded, friendly character designs
+Geometric shapes with smooth edges
+Minimalist but expressive faces
+Bold outlines (2-3px)
+
+Animation Style:
+
+Smooth ease-in-ease-out transitions
+Bounce effects for icons appearing
+Fade and slide transitions between scenes
+Parallax scrolling for depth
+Gentle floating/breathing animations for static elements
+
+Typography:
+
+Primary Font: Bold, modern sans-serif (Poppins/Inter style)
+Size Hierarchy: Large for main messages, medium for details
+Text animations: Fade in from bottom, typewriter effect for numbers
+
+Icons & Symbols:
+
+Shield (protection)
+Umbrella (coverage)
+Family silhouettes (beneficiaries)
+Heart + pulse (health)
+House (property)
+Car (vehicle)
+Graduation cap (education)
+Checkmarks (success)
+
+
+🎵 AUDIO SPECIFICATIONS
+Background Music:
+
+Genre: Uplifting corporate/inspirational
+Tempo: 120-130 BPM
+Mood: Confident, warm, trustworthy
+Style: Piano-led with soft strings, no heavy drums
+
+Sound Effects:
+
+Gentle "pop" for icons appearing
+Soft "whoosh" for scene transitions
+Subtle "ding" for checkmarks and success moments
+No harsh or startling sounds
+
+Voiceover (Optional):
+
+Tone: Warm, confident, reassuring
+Age: 35-45 years old sound
+Gender: Male or neutral
+Language: English or Hindi
+Script: "Life is unpredictable. But with Gagan Shah, your family's future is secure. Twelve years of excellence. Fifteen hundred happy families. Complete insurance solutions for every need. Don't wait for tomorrow. Protect what matters most, today."
+
+
+📱 PLATFORM-SPECIFIC VERSIONS
+For Instagram/Facebook Reels (9:16 vertical):
+
+Emphasize bold text overlays
+Larger icons and text
+Quick 30-second version
+Captions always ON
+
+For YouTube/Website (16:9 horizontal):
+
+Full 60-second version
+More detailed information
+Professional presentation
+Optional voiceover
+
+For WhatsApp Status (1:1 square):
+
+30-second quick version
+Focus on single message: "Call Now"
+Minimal text, maximum impact
+
+
+✅ FINAL CHECKLIST FOR AI GENERATOR
+
+ Vivid, high-contrast colors throughout
+ Smooth 30fps or 60fps animation
+ No jarring transitions
+ Text readable on mobile screens
+ Clear call-to-action in last 10 seconds
+ Brand colors consistent
+ Icons and illustrations cohesive
+ Uplifting, trustworthy mood
+ Contact information clearly visible
+ Professional quality output (1080p minimum)
+
+
+🚀 QUICK PROMPT FOR AI VIDEO TOOLS
+FOR TOOLS LIKE RUNWAY, PIKA, LUMA, SYNTHESIA:
+"Create a 60-second promotional video in vivid 2D illustration style with smooth animations. Show an Indian insurance consultant's services with iconic flat design graphics. Include: protective shield transforming into umbrella over family, success story montage with ₹50 lakh term insurance, medical heart surgery, car repair, circular expanding icons for insurance types (term, medical, vehicle, child, retirement), shocking statistics with bold numbers, contact information display with phone/email/WhatsApp icons, and ending with trust badges. Color palette: deep blue, vibrant orange, emerald green, warm yellow on white. Modern sans-serif typography, bounce animations, smooth transitions, warm uplifting corporate music. Professional, trustworthy, and optimistic mood. Text overlays: 'Secure Your Future', '12+ Years Excellence', '1500+ Happy Families', contact +91 98765 43210, Mysuru Karnataka. Make it inspiring and action-oriented."
+
+💡 ALTERNATIVE: SIMPLER ONE-LINE PROMPT
+"Animated 60s insurance promo video, vivid 2D flat illustration style, protective shield over Indian family, success stories montage, insurance type icons, bold statistics, contact info, blue-orange-green palette, smooth transitions, uplifting music, modern typography, professional trustworthy mood, call-to-action"
+
+Tools Recommended:
+
+Runway Gen-3 (best for illustration style)
+Pika Labs (great for transitions)
+Leonardo AI Motion (good for icon animations)
+Canva Video (easiest for templates)
+Adobe Express (quick professional results)
+InVideo AI (text-to-video with scripts)

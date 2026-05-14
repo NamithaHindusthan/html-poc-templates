@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagan Shah - Your Insurance Partner</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- STYLES -->
+    <style>
+        :root {
+            --bg-color: #FBF9F1;
+            --card-bg: #FFFFFF;
+            --primary-accent: #A7C4B8; /* Soft Sage Green */
+            --secondary-accent: #DAB894; /* Warm Terracotta/Beige */
+            --text-dark: #4A4A4A;
+            --text-light: #6c757d;
+            --border-color: #EAEAEA;
+            --gradient-bg: linear-gradient(135deg, #A7C4B8, #DAB894);
+            --highlight-glow: 0 0 15px rgba(167, 196, 184, 0.6);
+        }
+
+        /* Use Poppins as the main font */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            margin: 0;
+        }
+        
+        /* Use Playfair Display for main headings */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .vcard-container {
+            max-width: 420px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px); /* Modern glassmorphism touch */
+            transition: transform 0.3s ease;
+        }
+
+        .vcard-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .vcard-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: var(--gradient-bg);
+            border-radius: 32px 32px 0 0;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: var(--gradient-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            border: 6px solid white;
+            box-shadow: var(--highlight-glow);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-pic:hover {
+            transform: scale(1.08) rotate(5deg);
+            box-shadow: 0 0 25px rgba(167, 196, 184, 0.8);
+        }
+        
+        .profile-pic i {
+            font-size: 4rem;
+            color: white;
+            z-index: 2;
+        }
+
+        .profile-pic::after {
+            content: '\f0d1'; /* Subtle insurance icon overlay */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.1);
+            bottom: -20px;
+            right: -20px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-radius: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-bg);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--highlight-glow), 0 12px 30px rgba(167, 196, 184, 0.7);
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--text-dark);
+            border: 1px dashed var(--primary-accent);
+        }
+        .btn-secondary:hover {
+            background-color: var(--primary-accent);
+            color: white;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(167, 196, 184, 0.4);
+        }
+
+        /* New Modern Buttons Example */
+        .new-btn {
+            background: var(--secondary-accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(218, 184, 148, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem auto;
+            display: block;
+            width: fit-content;
+        }
+
+        .new-btn:hover {
+            background: #c7a07a;
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(218, 184, 148, 0.5);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.9rem;
+            margin-bottom: 1.75rem;
+            color: var(--text-dark);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary-accent);
+            font-size: 1.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-bg);
+            margin: 0.75rem auto 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .usp-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            background: linear-gradient(to right, #f9f9f9, #ffffff);
+            padding: 1rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .usp-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .usp-list i {
+            color: var(--primary-accent);
+            margin-top: 4px;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        /* Accordion Styles with Modern Touches */
+        .accordion-item {
+            border: none;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            background: white;
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion-button {
+            width: 100%;
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            text-align: left;
+            padding: 1.25rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .accordion-button:hover {
+            background: linear-gradient(135deg, #94b1a5, #c7a07a);
+        }
+
+        .accordion-button .icon {
+            transition: transform 0.4s ease;
+        }
+        .accordion-button.active .icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: #f9f9f9;
+            padding: 0 1.25rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .accordion-content ul {
+            padding: 1.25rem 0;
+            list-style: none;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        .accordion-content li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+        .accordion-content li:last-child {
+            border-bottom: none;
+        }
+        .accordion-content i {
+            color: var(--secondary-accent);
+            font-size: 1.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.75rem;
+            background: linear-gradient(to bottom, #f9f9f9, #ffffff);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item {
+            padding: 1rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-item .value {
+            font-size: 2.1rem;
+            font-weight: 700;
+            background: var(--gradient-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+        .stat-item .label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+        
+        .news-section {
+            margin-top: 2.5rem;
+            padding: 1.75rem;
+            background: var(--gradient-bg);
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--highlight-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-section::before {
+            content: '\f0a1'; /* Megaphone icon for news */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .news-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .news-section h3 i {
+            font-size: 1.2rem;
+        }
+
+        .news-section p {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-section .highlight {
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .testimonials {
+            margin-top: 2rem;
+            padding: 1.75rem;
+            background: #f5f5f5;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-item {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+            padding: 1.25rem;
+            border-left: 5px solid var(--primary-accent);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        .testimonial-item::before {
+            content: '\f10d'; /* Quote icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: var(--primary-accent);
+            font-size: 1.5rem;
+            opacity: 0.2;
+        }
+
+        .testimonial-item cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-style: normal;
+            color: var(--text-dark);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .footer-socials {
+            text-align: center;
+            margin-top: 2.5rem;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 1.75rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer-socials a {
+            color: var(--text-light);
+            font-size: 1.75rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .footer-socials a:hover {
+            color: var(--primary-accent);
+            transform: translateY(-5px) scale(1.2);
+        }
+
+        .footer-socials a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-accent);
+            transition: width 0.3s ease;
+        }
+
+        .footer-socials a:hover::after {
+            width: 100%;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .vcard-container {
+                padding: 1.75rem;
+                border-radius: 24px;
+            }
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            .footer-socials {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vcard-container">
+        
+        <header class="profile-header">
+            <div class="profile-pic">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <h1>Gagan Shah <i class="fas fa-shield-alt" style="font-size: 0.8em; color: var(--primary-accent);"></i></h1>
+            <p style="color: var(--text-light);">Your Trusted Partner in Financial Security & Insurance Solutions</p>
+        </header>
+
+        <section class="action-buttons">
+            <a href="tel:+919876543210" class="action-btn btn-primary">
+                <i class="fas fa-phone"></i> Call Now
+            </a>
+            <a href="https://wa.me/919876543210" class="action-btn btn-secondary">
+                <i class="fab fa-whatsapp"></i> WhatsApp Chat
+            </a>
+            <!-- Example New Modern Button -->
+            <button class="new-btn" onclick="alert('Schedule a free consultation!')">
+                <i class="fas fa-calendar-check"></i> Book Consultation
+            </button>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-star"></i> Why Choose Me?</h2>
+            <ul class="usp-list">
+                <li><i class="fas fa-check-circle"></i> <div><strong>12+ Years of Trust:</strong> Proven experience in securing families' futures with tailored insurance strategies.</div></li>
+                <li><i class="fas fa-user-check"></i> <div><strong>Personalized Plans:</strong> Custom insurance solutions designed for your unique life stages, family needs, and financial goals—not generic policies.</div></li>
+                <li><i class="fas fa-comments"></i> <div><strong>Clear & Simple Advice:</strong> Demystifying insurance jargon to empower you with confident, informed decisions.</div></li>
+                <li><i class="fas fa-rupee-sign"></i> <div><strong>Expert in Tax Savings:</strong> Leverage insurance for benefits under Section 80C, 80D, and more to optimize your finances.</div></li>
+                <li><i class="fas fa-headset"></i> <div><strong>End-to-End Support:</strong> From policy selection to claim assistance, I'm with you every step for hassle-free experiences.</div></li>
+            </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+            <h2 class="section-title"><i class="fas fa-cogs"></i> My Services</h2>
+            <div class="accordion">
+                <!-- Accordion Item 1 -->
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span><i class="fas fa-shield-alt"></i> Term Life Insurance</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-shield-alt"></i> High coverage at affordable premiums—pure protection for your loved ones.</li>
+                            <li><i class="fas fa-wallet"></i> Tax benefits under Section 80C and 10(10D) for premiums and payouts.</li>
+                            <li><i class="fas fa-file-invoice-dollar"></i> Swift claim settlement with 98% success rate.</li>
+                            <li><i class="fas fa-rupee-sign"></i> Riders for critical illness and accidental death for enhanced security.</li>
+                            <li><i class="fas fa-clock"></i> Flexible terms from 10-40 years to match your life goals.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Similar for others, added icons to buttons -->
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span><i class="fas fa-heartbeat"></i> Medical Insurance (Health)</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-hospital"></i> Cashless treatment at 10,000+ network hospitals across India.</li>
+                            <li><i class="fas fa-users"></i> Individual, family floater, and senior citizen plans.</li>
+                            <li><i class="fas fa-briefcase-medical"></i> Coverage for hospitalization, daycare, and critical illnesses like cancer/heart issues.</li>
+                            <li><i class="fas fa-heartbeat"></i> No-claim bonuses and tax savings under Section 80D up to ₹1 lakh.</li>
+                            <li><i class="fas fa-ambulance"></i> Pre/post-hospitalization expenses and domiciliary coverage.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span><i class="fas fa-car"></i> Vehicle Insurance</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-car-crash"></i> Comprehensive coverage against accidents, theft, and natural calamities.</li>
+                            <li><i class="fas fa-tools"></i> 24/7 roadside assistance and garage network support.</li>
+                            <li><i class="fas fa-undo-alt"></i> Zero depreciation add-on for full claim value on parts.</li>
+                            <li><i class="fas fa-user-shield"></i> Third-party liability up to ₹7.5 lakh as per law.</li>
+                            <li><i class="fas fa-percentage"></i> No-claim discounts up to 50% on renewals.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span><i class="fas fa-home"></i> Home Insurance</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-home"></i> Protection for structure and contents against fire, burglary, and disasters.</li>
+                            <li><i class="fas fa-fire"></i> Coverage for earthquakes, floods, and terrorism add-ons.</li>
+                            <li><i class="fas fa-couch"></i> Personal accident cover for family and valuables insurance.</li>
+                            <li><i class="fas fa-rupee-sign"></i> Affordable premiums with tax benefits on home loans linked policies.</li>
+                            <li><i class="fas fa-shield-alt"></i> Quick surveys and claims with digital processes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span><i class="fas fa-child"></i> Child Future Plans & Retirement</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-child"></i> ULIP/Endowment plans for child's education and marriage.</li>
+                            <li><i class="fas fa-piggy-bank"></i> Wealth creation with market-linked returns and life cover.</li>
+                            <li><i class="fas fa-umbrella"></i> Pension annuities for post-retirement income security.</li>
+                            <li><i class="fas fa-chart-line"></i> Tax-deferred growth and deductions under 80C.</li>
+                            <li><i class="fas fa-hand-holding-heart"></i> Waiver of premium riders for unforeseen events.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h3><i class="fas fa-newspaper"></i> Breaking Update: Tata AIA & New India Tie-Up</h3>
+            <p>In a strategic partnership announced recently, <span class="highlight">Tata AIA Life Insurance</span> has tied up with <span class="highlight">New India Assurance</span> to offer bundled health and life coverage products. This collaboration aims to provide seamless bancassurance through banks, enhancing distribution networks and customer access to comprehensive protection plans.</p>
+            <p>Key stats from the tie-up: Expected to reach 5 million+ new customers in the first year, with combined premiums projected at ₹500 crore. This move strengthens Tata AIA's position in the life insurance market (current market share: 12%) and leverages New India's general insurance expertise (claim settlement ratio: 95%+).</p>
+            <p>Source: Industry reports as of 2023; enhances options for clients seeking integrated solutions.</p>
+        </section>
+
+        <section class="testimonials">
+            <h2 class="section-title"><i class="fas fa-quote-left"></i> Client Testimonials</h2>
+            <div class="testimonial-item">
+                "Gagan helped me secure a family health plan that saved us during a medical emergency. Highly recommended!"
+                <cite>- Rajesh Kumar, Mumbai</cite>
+            </div>
+            <div class="testimonial-item">
+                "Transparent advice on term insurance—felt confident with the tax benefits explained clearly."
+                <cite>- Priya Singh, Delhi</cite>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-item">
+                <div class="value">1500+</div>
+                <div class="label"><i class="fas fa-users"></i> Happy Clients Served</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">2200+</div>
+                <div class="label"><i class="fas fa-file-alt"></i> Policies Issued</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">98.5%</div>
+                <div class="label"><i class="fas fa-check-double"></i> Claim Settlement</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">₹50Cr+</div>
+                <div class="label"><i class="fas fa-rupee-sign"></i> Coverage Protected</div>
+            </div>
+        </section>
+
+        <footer class="footer-socials">
+            <a href="tel:+919876543210" title="Phone"><i class="fas fa-phone"></i></a>
+            <a href="mailto:gaganhshah@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="https://wa.me/919876543210" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://linkedin.com" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC for Accordion -->
+    <script>
+        const accordionBtns = document.querySelectorAll(".accordion-button");
+
+        accordionBtns.forEach(button => {
+            button.addEventListener("click", function() {
+                this.classList.toggle("active");
+                
+                const content = this.nextElementSibling;
+
+                accordionBtns.forEach(otherBtn => {
+                    if (otherBtn !== this) {
+                        otherBtn.classList.remove("active");
+                        otherBtn.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

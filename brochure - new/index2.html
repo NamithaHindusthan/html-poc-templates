@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagan Shah - Your Insurance Partner</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- STYLES -->
+    <style>
+        :root {
+            --bg-color: #FBF9F1;
+            --card-bg: #FFFFFF;
+            --primary-accent: #A7C4B8; /* Soft Sage Green */
+            --secondary-accent: #DAB894; /* Warm Terracotta/Beige */
+            --text-dark: #4A4A4A;
+            --text-light: #6c757d;
+            --border-color: #EAEAEA;
+        }
+
+        /* Use Poppins as the main font */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        /* Use Playfair Display for main headings */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .vcard-container {
+            max-width: 420px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(167, 196, 184, 0.4);
+        }
+        
+        .profile-pic i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-accent);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(167, 196, 184, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: var(--border-color);
+            color: var(--text-dark);
+        }
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .usp-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .usp-list i {
+            color: var(--primary-accent);
+            margin-top: 4px;
+        }
+
+        /* Accordion Styles */
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+
+        .accordion-button {
+            width: 100%;
+            background: #fff;
+            border: none;
+            text-align: left;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .accordion-button:hover {
+            background-color: #f9f9f9;
+        }
+
+        .accordion-button .icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button.active .icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #fafafa;
+            padding: 0 1rem;
+        }
+        
+        .accordion-content ul {
+            padding: 1rem 0;
+            list-style: none;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .accordion-content li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .accordion-content i {
+            color: var(--secondary-accent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .stat-item .value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-accent);
+        }
+        .stat-item .label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .footer-socials {
+            text-align: center;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .footer-socials a {
+            color: var(--text-light);
+            margin: 0 0.75rem;
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+        .footer-socials a:hover {
+            color: var(--primary-accent);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="vcard-container">
+        
+        <header class="profile-header">
+            <div class="profile-pic">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <h1>Gagan Shah</h1>
+            <p style="color: var(--text-light);">Your Partner in Financial Security</p>
+        </header>
+
+        <section class="action-buttons">
+            <a href="tel:+919876543210" class="action-btn btn-primary">
+                <i class="fas fa-phone"></i> Call Now
+            </a>
+            <a href="https://wa.me/919876543210" class="action-btn btn-secondary">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+        </section>
+
+        <section>
+            <h2 class="section-title">Why Choose Me?</h2>
+            <ul class="usp-list">
+                <li><i class="fas fa-check-circle"></i> <div><strong>12+ Years of Trust:</strong> Proven experience in securing families' futures.</div></li>
+                <li><i class="fas fa-check-circle"></i> <div><strong>Personalized Plans:</strong> Insurance that's tailored to your unique life, not one-size-fits-all.</div></li>
+                <li><i class="fas fa-check-circle"></i> <div><strong>Clear & Simple Advice:</strong> I cut through the jargon so you can make confident decisions.</div></li>
+            </ul>
+        </section>
+
+        <section style="margin-top: 2rem;">
+            <h2 class="section-title">My Services</h2>
+            <div class="accordion">
+                <!-- Accordion Item 1 -->
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span>🛡️ Term Life Insurance</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-shield-alt"></i> Maximum protection at minimum cost.</li>
+                            <li><i class="fas fa-wallet"></i> Tax benefits under Section 80C.</li>
+                            <li><i class="fas fa-file-invoice-dollar"></i> Quick & hassle-free claim settlement.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Accordion Item 2 -->
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span>🏥 Medical Insurance</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-hospital"></i> Cashless access to a wide hospital network.</li>
+                            <li><i class="fas fa-users"></i> Plans for individuals and families.</li>
+                            <li><i class="fas fa-briefcase-medical"></i> Coverage for critical illnesses.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Accordion Item 3 -->
+                <div class="accordion-item">
+                    <button class="accordion-button">
+                        <span>🚗 Vehicle Insurance</span>
+                        <i class="fas fa-plus icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><i class="fas fa-car-crash"></i> Comprehensive coverage for peace of mind.</li>
+                            <li><i class="fas fa-tools"></i> 24/7 roadside assistance add-on.</li>
+                            <li><i class="fas fa-undo-alt"></i> Zero depreciation for full claim value.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-item">
+                <div class="value">1200+</div>
+                <div class="label">Happy Clients</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">1800+</div>
+                <div class="label">Policies Issued</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">98%</div>
+                <div class="label">Claim Settlement</div>
+            </div>
+        </section>
+
+        <footer class="footer-socials">
+            <a href="tel:+919876543210" title="Phone"><i class="fas fa-phone"></i></a>
+            <a href="mailto:gaganhshah@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="https://wa.me/919876543210" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC for Accordion -->
+    <script>
+        const accordionBtns = document.querySelectorAll(".accordion-button");
+
+        accordionBtns.forEach(button => {
+            button.addEventListener("click", function() {
+                // Toggle the 'active' class on the button
+                this.classList.toggle("active");
+                
+                // Get the content panel
+                const content = this.nextElementSibling;
+
+                // Toggle the max-height
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null; // Collapse the accordion
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px"; // Expand the accordion
+                }
+            });
+        });
+    </script>
+</body>
+</html>

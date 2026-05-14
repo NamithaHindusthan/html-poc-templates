@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagan Shah - Your Insurance Partner</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- STYLES -->
+    <style>
+        :root {
+            --bg-color: #F5F5F5; /* Light beige/gray for decent background */
+            --card-bg: #FFFFFF;
+            --primary-accent: #D7BDE2; /* Soft lavender */
+            --secondary-accent: #E5E4E2; /* Beige/light mud */
+            --tertiary-accent: #D2B48C; /* Light brown */
+            --text-dark: #4A4A4A;
+            --text-light: #6c757d;
+            --border-color: #E5E4E2; /* Beige border */
+            --gradient-bg: linear-gradient(135deg, #D7BDE2, #E5E4E2, #D2B48C); /* Soft pastel gradient */
+            --highlight-glow: 0 0 15px rgba(215, 189, 226, 0.6); /* Lavender glow */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .vcard-container {
+            max-width: 420px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Slider Structure */
+        .slider-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 400%; /* 4 pages */
+        }
+
+        .slide {
+            width: 25%; /* Each slide takes 25% of the total width */
+            padding: 2rem;
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navigation */
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+            background: var(--secondary-accent);
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--border-color);
+            border-radius: 50%;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--primary-accent);
+            transform: scale(1.3);
+        }
+
+        /* Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .nav-arrow:hover {
+            background: var(--primary-accent);
+            color: white;
+        }
+
+        .prev {
+            left: 1rem;
+        }
+
+        .next {
+            right: 1rem;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--gradient-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            box-shadow: var(--highlight-glow);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-pic:hover {
+            transform: rotate(360deg);
+        }
+        
+        .profile-pic i {
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        /* Action Buttons - Modern Different */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 50px; /* Pill shape */
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 0 2px var(--primary-accent); /* Outlined */
+            color: var(--primary-accent);
+            background: transparent;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(215, 189, 226, 0.5);
+            transform: scale(1.05);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px dashed var(--tertiary-accent);
+            color: var(--tertiary-accent);
+        }
+
+        .btn-ghost:hover {
+            background: var(--tertiary-accent);
+            color: white;
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--tertiary-accent);
+            border-radius: 2px;
+        }
+
+        /* USP List */
+        .usp-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 16px;
+            background: var(--secondary-accent);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: background 0.3s ease;
+        }
+
+        .usp-list li:hover {
+            background: var(--primary-accent);
+            color: white;
+        }
+
+        .usp-list i {
+            color: var(--tertiary-accent);
+            font-size: 1.2rem;
+        }
+
+        /* Accordion - Modernized */
+        .accordion-item {
+            margin-bottom: 1rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .accordion-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--secondary-accent);
+            border: none;
+            text-align: left;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+        }
+
+        .accordion-button:hover {
+            background: var(--primary-accent);
+            color: white;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+            padding: 0 1rem;
+        }
+
+        .accordion-content ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dotted var(--border-color);
+        }
+
+        /* News Section */
+        .news-section {
+            padding: 1.5rem;
+            background: var(--primary-accent);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Testimonials */
+        .testimonials .testimonial-item {
+            padding: 1rem;
+            background: var(--secondary-accent);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat-item .value {
+            font-size: 1.5rem;
+            color: var(--primary-accent);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            background: var(--tertiary-accent);
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+        }
+
+        .footer-socials a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vcard-container">
+        <div class="slider-wrapper">
+            <div class="slides" id="slides">
+                <!-- Page 1: Profile & Actions -->
+                <div class="slide">
+                    <header class="profile-header">
+                        <div class="profile-pic">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h1>Gagan Shah</h1>
+                        <p style="color: var(--text-light);">Your Trusted Partner in Financial Security & Insurance Solutions</p>
+                    </header>
+                    <section class="action-buttons">
+                        <a href="tel:+919876543210" class="action-btn">
+                            <i class="fas fa-phone"></i> Call Now
+                        </a>
+                        <a href="https://wa.me/919876543210" class="action-btn btn-ghost">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <button class="action-btn" onclick="alert('Book a free consultation!')">
+                            <i class="fas fa-calendar-check"></i> Book Consultation
+                        </button>
+                    </section>
+                </div>
+
+                <!-- Page 2: Why Choose Me -->
+                <div class="slide">
+                    <h2 class="section-title">Why Choose Me?</h2>
+                    <ul class="usp-list">
+                        <li><i class="fas fa-check-circle"></i> <div><strong>12+ Years of Trust:</strong> Proven experience in securing families' futures with tailored insurance strategies.</div></li>
+                        <li><i class="fas fa-user-check"></i> <div><strong>Personalized Plans:</strong> Custom insurance solutions designed for your unique life stages, family needs, and financial goals—not generic policies.</div></li>
+                        <li><i class="fas fa-comments"></i> <div><strong>Clear & Simple Advice:</strong> Demystifying insurance jargon to empower you with confident, informed decisions.</div></li>
+                        <li><i class="fas fa-rupee-sign"></i> <div><strong>Expert in Tax Savings:</strong> Leverage insurance for benefits under Section 80C, 80D, and more to optimize your finances.</div></li>
+                        <li><i class="fas fa-headset"></i> <div><strong>End-to-End Support:</strong> From policy selection to claim assistance, I'm with you every step for hassle-free experiences.</div></li>
+                    </ul>
+                </div>
+
+                <!-- Page 3: My Services -->
+                <div class="slide">
+                    <h2 class="section-title">My Services</h2>
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span><i class="fas fa-shield-alt"></i> Term Life Insurance</span>
+                                <i class="fas fa-plus icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>High coverage at affordable premiums—pure protection for your loved ones.</li>
+                                    <li>Tax benefits under Section 80C and 10(10D) for premiums and payouts.</li>
+                                    <li>Swift claim settlement with 98% success rate.</li>
+                                    <li>Riders for critical illness and accidental death for enhanced security.</li>
+                                    <li>Flexible terms from 10-40 years to match your life goals.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span><i class="fas fa-heartbeat"></i> Medical Insurance (Health)</span>
+                                <i class="fas fa-plus icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>Cashless treatment at 10,000+ network hospitals across India.</li>
+                                    <li>Individual, family floater, and senior citizen plans.</li>
+                                    <li>Coverage for hospitalization, daycare, and critical illnesses like cancer/heart issues.</li>
+                                    <li>No-claim bonuses and tax savings under Section 80D up to ₹1 lakh.</li>
+                                    <li>Pre/post-hospitalization expenses and domiciliary coverage.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span><i class="fas fa-car"></i> Vehicle Insurance</span>
+                                <i class="fas fa-plus icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>Comprehensive coverage against accidents, theft, and natural calamities.</li>
+                                    <li>24/7 roadside assistance and garage network support.</li>
+                                    <li>Zero depreciation add-on for full claim value on parts.</li>
+                                    <li>Third-party liability up to ₹7.5 lakh as per law.</li>
+                                    <li>No-claim discounts up to 50% on renewals.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span><i class="fas fa-home"></i> Home Insurance</span>
+                                <i class="fas fa-plus icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>Protection for structure and contents against fire, burglary, and disasters.</li>
+                                    <li>Coverage for earthquakes, floods, and terrorism add-ons.</li>
+                                    <li>Personal accident cover for family and valuables insurance.</li>
+                                    <li>Affordable premiums with tax benefits on home loans linked policies.</li>
+                                    <li>Quick surveys and claims with digital processes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span><i class="fas fa-child"></i> Child Future Plans & Retirement</span>
+                                <i class="fas fa-plus icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>ULIP/Endowment plans for child's education and marriage.</li>
+                                    <li>Wealth creation with market-linked returns and life cover.</li>
+                                    <li>Pension annuities for post-retirement income security.</li>
+                                    <li>Tax-deferred growth and deductions under 80C.</li>
+                                    <li>Waiver of premium riders for unforeseen events.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 4: News, Testimonials, Stats, Footer -->
+                <div class="slide">
+                    <div class="news-section">
+                        <h3>Breaking Update: Tata AIA & New India Tie-Up</h3>
+                        <p>In a strategic partnership, Tata AIA Life Insurance has tied up with New India Assurance to offer bundled health and life coverage. Expected to reach 5 million+ new customers, with premiums at ₹500 crore.</p>
+                    </div>
+                    <div class="testimonials">
+                        <h2 class="section-title">Client Testimonials</h2>
+                        <div class="testimonial-item">
+                            "Gagan helped me secure a family health plan that saved us during a medical emergency."
+                            <cite>- Rajesh Kumar</cite>
+                        </div>
+                        <div class="testimonial-item">
+                            "Transparent advice on term insurance—felt confident with the tax benefits."
+                            <cite>- Priya Singh</cite>
+                        </div>
+                    </div>
+                    <section class="stats-grid">
+                        <div class="stat-item">
+                            <div class="value">1500+</div>
+                            <div class="label">Happy Clients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value">2200+</div>
+                            <div class="label">Policies Issued</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value">98.5%</div>
+                            <div class="label">Claim Settlement</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value">₹50Cr+</div>
+                            <div class="label">Coverage Protected</div>
+                        </div>
+                    </section>
+                    <footer class="footer-socials">
+                        <a href="tel:+919876543210"><i class="fas fa-phone"></i></a>
+                        <a href="mailto:gaganhshah@gmail.com"><i class="fas fa-envelope"></i></a>
+                        <a href="https://wa.me/919876543210"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://linkedin.com"><i class="fab fa-linkedin"></i></a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="nav-dots">
+            <div class="nav-dot active" data-slide="0"></div>
+            <div class="nav-dot" data-slide="1"></div>
+            <div class="nav-dot" data-slide="2"></div>
+            <div class="nav-dot" data-slide="3"></div>
+        </div>
+
+        <!-- Arrows -->
+        <button class="nav-arrow prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-arrow next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- JavaScript for Slider and Accordion -->
+    <script>
+        // Slider Logic
+        const slides = document.getElementById('slides');
+        const dots = document.querySelectorAll('.nav-dot');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.style.transform = `translateX(-${index * 25}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => showSlide(parseInt(dot.dataset.slide)));
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const prev = currentSlide > 0 ? currentSlide - 1 : 3;
+            showSlide(prev);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const next = currentSlide < 3 ? currentSlide + 1 : 0;
+            showSlide(next);
+        });
+
+        // Accordion Logic
+        const accordionBtns = document.querySelectorAll('.accordion-button');
+        accordionBtns.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

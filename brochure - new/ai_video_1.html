@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagan Shah Insurance - Beautiful Promo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 50%, #E8F4F8 100%);
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            padding: 60px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Slide 1 - Title with Pastel Pink/Blue */
+        .slide1 {
+            background: linear-gradient(135deg, #FFD3E1 0%, #C9E4F5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide1::before {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            top: -150px;
+            right: -150px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .slide1::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        .shield-icon {
+            width: 200px;
+            height: 200px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            z-index: 2;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-30px, 30px) rotate(240deg); }
+        }
+
+        .main-title {
+            font-size: 5em;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C084FC 50%, #60A5FA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 30px 0;
+            font-weight: 700;
+            text-align: center;
+            animation: slideInUp 1s ease-out;
+            z-index: 2;
+            text-shadow: 2px 2px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        .subtitle {
+            font-size: 2.2em;
+            color: #8B5A8A;
+            text-align: center;
+            animation: slideInUp 1.5s ease-out;
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Slide 2 - Stats with Pastel Peach */
+        .slide2 {
+            background: linear-gradient(135deg, #FFE4D6 0%, #FFD6E8 100%);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+            max-width: 1000px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: popIn 0.8s ease-out backwards;
+            border: 3px solid rgba(255, 182, 193, 0.5);
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .stat-box:nth-child(1) { animation-delay: 0.2s; }
+        .stat-box:nth-child(2) { animation-delay: 0.4s; }
+        .stat-box:nth-child(3) { animation-delay: 0.6s; }
+        .stat-box:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .stat-number {
+            font-size: 4.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA07A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            font-size: 1.8em;
+            color: #8B5A8A;
+            font-weight: 600;
+        }
+
+        /* Slide 3 - Success Stories with Pastel Green/Yellow */
+        .slide3 {
+            background: linear-gradient(135deg, #E0F7E9 0%, #FFF9C4 100%);
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+            max-width: 1300px;
+        }
+
+        .story-card {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 35px;
+            border-radius: 30px;
+            text-align: center;
+            animation: slideInLeft 1s ease-out backwards;
+            box-shadow: 0 15px 40px rgba(144, 238, 144, 0.3);
+            border: 3px solid rgba(144, 238, 144, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-15px);
+        }
+
+        .story-card:nth-child(1) { animation-delay: 0.2s; }
+        .story-card:nth-child(2) { animation-delay: 0.5s; }
+        .story-card:nth-child(3) { animation-delay: 0.8s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .story-gif {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            margin: 0 auto 25px;
+            object-fit: cover;
+            border: 4px solid rgba(144, 238, 144, 0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .story-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .story-text {
+            font-size: 1.3em;
+            color: #5D7B5D;
+            line-height: 1.8;
+        }
+
+        .story-amount {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 20px;
+        }
+
+        /* Slide 4 - Services with Pastel Purple/Lavender */
+        .slide4 {
+            background: linear-gradient(135deg, #E8D5F2 0%, #D5E8F7 100%);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1300px;
+        }
+
+        .service-box {
+            background: rgba(255, 255, 255, 0.75);
+            padding: 35px;
+            border-radius: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(186, 148, 219, 0.4);
+            animation: bounceIn 0.8s ease-out backwards;
+            box-shadow: 0 15px 35px rgba(186, 148, 219, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .service-box:hover {
+            transform: scale(1.08) rotate(2deg);
+            border-color: #BA94DB;
+        }
+
+        .service-box:nth-child(1) { animation-delay: 0.1s; }
+        .service-box:nth-child(2) { animation-delay: 0.2s; }
+        .service-box:nth-child(3) { animation-delay: 0.3s; }
+        .service-box:nth-child(4) { animation-delay: 0.4s; }
+        .service-box:nth-child(5) { animation-delay: 0.5s; }
+        .service-box:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            60% {
+                transform: scale(1.1) rotate(10deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .service-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .service-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #8B68B8;
+            margin-bottom: 15px;
+        }
+
+        .service-desc {
+            font-size: 1.2em;
+            color: #9B7DB8;
+        }
+
+        /* Slide 5 - Shocking Facts with Pastel Coral */
+        .slide5 {
+            background: linear-gradient(135deg, #FFE0E0 0%, #FFD6D6 100%);
+        }
+
+        .facts-container {
+            max-width: 1100px;
+        }
+
+        .fact-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px 60px;
+            border-radius: 30px;
+            margin: 25px 0;
+            backdrop-filter: blur(10px);
+            animation: slideInRight 1s ease-out backwards;
+            border: 3px solid rgba(255, 182, 193, 0.5);
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3);
+        }
+
+        .fact-item:nth-child(1) { animation-delay: 0.2s; }
+        .fact-item:nth-child(2) { animation-delay: 0.5s; }
+        .fact-item:nth-child(3) { animation-delay: 0.8s; }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fact-text {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #E57373;
+            text-align: center;
+        }
+
+        .warning-text {
+            font-size: 3em;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFB347 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 40px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.08); }
+        }
+
+        /* Slide 6 - Contact with WhatsApp Theme */
+        .slide6 {
+            background: linear-gradient(135deg, #D4F4DD 0%, #B3E5D1 100%);
+        }
+
+        .contact-container {
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .contact-title {
+            font-size: 4em;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            margin-bottom: 60px;
+        }
+
+        .contact-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 35px;
+            border-radius: 25px;
+            margin: 25px 0;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out backwards;
+            border: 3px solid rgba(37, 211, 102, 0.3);
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-box:hover {
+            transform: translateY(-10px);
+            border-color: #25D366;
+        }
+
+        .contact-box:nth-child(2) { animation-delay: 0.2s; }
+        .contact-box:nth-child(3) { animation-delay: 0.4s; }
+        .contact-box:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-icon {
+            font-size: 3.5em;
+            margin-right: 20px;
+        }
+
+        .contact-info {
+            font-size: 2.3em;
+            color: #128C7E;
+            font-weight: 700;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            font-size: 2.3em;
+            padding: 25px 60px;
+            border-radius: 50px;
+            border: none;
+            margin-top: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+        }
+
+        .section-title {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C084FC 50%, #60A5FA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        /* Controls with Pastel Theme */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 25px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.85);
+            color: #8B68B8;
+            border: 3px solid rgba(186, 148, 219, 0.5);
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.4em;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(186, 148, 219, 0.3);
+        }
+
+        .control-btn:hover {
+            background: rgba(186, 148, 219, 0.3);
+            transform: scale(1.1);
+            border-color: #BA94DB;
+        }
+
+        .progress-dots {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(186, 148, 219, 0.6);
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: linear-gradient(135deg, #BA94DB 0%, #FF6B9D 100%);
+            transform: scale(1.5);
+            box-shadow: 0 5px 15px rgba(186, 148, 219, 0.5);
+        }
+
+        /* Chat Bubbles */
+        .chat-message {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px 35px;
+            border-radius: 30px;
+            margin: 20px auto;
+            max-width: 800px;
+            font-size: 1.8em;
+            color: #666;
+            animation: slideInLeft 0.8s ease-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 3px solid rgba(186, 148, 219, 0.3);
+        }
+
+        /* Floating Elements */
+        .floating-emoji {
+            position: absolute;
+            font-size: 3em;
+            animation: floatEmoji 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatEmoji {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(20px, -30px) rotate(15deg); }
+            66% { transform: translate(-20px, -15px) rotate(-15deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide slide1 active">
+            <span class="floating-emoji" style="top: 10%; left: 10%;">✨</span>
+            <span class="floating-emoji" style="top: 15%; right: 15%; animation-delay: 1s;">💖</span>
+            <span class="floating-emoji" style="bottom: 20%; left: 20%; animation-delay: 2s;">🌟</span>
+            <img src="https://i.pinimg.com/originals/e5/92/83/e59283bbf7c5b7e9b5b5c5f3a1c4d3e5.gif" class="shield-icon" alt="Protection">
+            <h1 class="main-title">Secure Your Future ✨</h1>
+            <p class="subtitle">Life is unpredictable, but your family's security shouldn't be! 💖</p>
+            <p class="subtitle" style="margin-top: 30px; font-size: 2em; color: #8B68B8;">Gagan Shah - Your Trusted Partner 🤝</p>
+            <p class="subtitle" style="margin-top: 15px; font-size: 1.8em; color: #FF6B9D;">⭐ 12+ Years of Excellence</p>
+        </div>
+
+        <!-- Slide 2: Stats -->
+        <div class="slide slide2">
+            <h2 class="section-title">Our Amazing Journey 🎉</h2>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">1500+</div>
+                    <div class="stat-label">😊 Happy Clients</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">2200+</div>
+                    <div class="stat-label">📋 Policies Issued</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">✅ Claim Settlement</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">🏆 Years Experience</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Success Stories -->
+        <div class="slide slide3">
+            <h2 class="section-title">Real Protection, Real Results! 🌈</h2>
+            <div class="stories-grid">
+                <div class="story-card">
+                    <img src="https://i.pinimg.com/originals/d7/4d/83/d74d83c0292145c852ed1a09076adb67.gif" class="story-gif" alt="Family">
+                    <div class="story-title">Sharma Family 👨‍👩‍👧‍👦</div>
+                    <div class="story-text">Term insurance protected the family after accident 💚</div>
+                    <div class="story-amount">₹50 Lakhs</div>
+                </div>
+                <div class="story-card">
+                    <img src="https://i.pinimg.com/originals/0e/3c/26/0e3c26989cb0c024d1c2a2e858e3518b.gif" class="story-gif" alt="Medical">
+                    <div class="story-title">Medical Miracle 🏥</div>
+                    <div class="story-text">Heart surgery fully covered, zero stress! 💙</div>
+                    <div class="story-amount">₹8 Lakhs</div>
+                </div>
+                <div class="story-card">
+                    <img src="https://i.pinimg.com/originals/1f/1d/14/1f1d14c3e9b4fa0a6c84b5f15bce35b1.gif" class="story-gif" alt="Car">
+                    <div class="story-title">Road Recovery 🚗</div>
+                    <div class="story-text">Car repaired with zero depreciation 🔧</div>
+                    <div class="story-amount">Full Coverage</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Services -->
+        <div class="slide slide4">
+            <h2 class="section-title">Complete Coverage for Every Need 🎯</h2>
+            <div class="services-grid">
+                <div class="service-box">
+                    <div class="service-icon">🛡️</div>
+                    <div class="service-title">Term Insurance</div>
+                    <div class="service-desc">Up to ₹2 Crore coverage</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">💚</div>
+                    <div class="service-title">Health Insurance</div>
+                    <div class="service-desc">Cashless hospitalization</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🚗</div>
+                    <div class="service-title">Vehicle Insurance</div>
+                    <div class="service-desc">Zero depreciation add-on</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">👶</div>
+                    <div class="service-title">Child Plans</div>
+                    <div class="service-desc">Education & Future</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🌅</div>
+                    <div class="service-title">Retirement Plans</div>
+                    <div class="service-desc">Guaranteed income</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🏠</div>
+                    <div class="service-title">Property Insurance</div>
+                    <div class="service-desc">Complete home protection</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Shocking Facts -->
+        <div class="slide slide5">
+            <h2 class="section-title">Did You Know? 😱</h2>
+            <div class="facts-container">
+                <div class="fact-item">
+                    <div class="fact-text">80% of Indians are Under-Insured! 📊</div>
+                </div>
+                <div class="fact-item">
+                    <div class="fact-text">₹1 Cr Coverage Costs Less Than Your Coffee! ☕</div>
+                </div>
+                <div class="fact-item">
+                    <div class="fact-text">Medical Inflation Rising at 15% Yearly! 📈</div>
+                </div>
+            </div>
+            <div class="warning-text">⏰ Don't Wait for Tomorrow!</div>
+        </div>
+
+        <!-- Slide 6: Contact (WhatsApp Theme) -->
+        <div class="slide slide6">
+            <div class="contact-container">
+                <div class="contact-title">Let's Connect! 💬</div>
+                <div class="contact-box">
+                    <span class="contact-icon">📞</span>
+                    <span class="contact-info">+91 98765 43210</span>
+                </div>
+                <div class="contact-box">
+                    <span class="contact-icon">📧</span>
+                    <span class="contact-info">gaganhshah@gmail.com</span>
+                </div>
+                <div class="contact-box">
+                    <span class="contact-icon">📍</span>
+                    <span class="contact-info">Mysuru, Karnataka</span>
+                </div>
+                <button class="cta-button">💚 Protect Your Family TODAY!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Dots -->
+    <div class="progress-dots">
+        <div class="dot active" data-slide="0"></div>
+        <div class="dot" data-slide="1"></div>
+        <div class="dot" data-slide="2"></div>
+        <div class="dot" data-slide="3"></div>
+        <div class="dot" data-slide="4"></div>
+        <div class="dot" data-slide="5"></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button class="control-btn" id="prevBtn">← Previous</button>
+        <button class="control-btn" id="autoBtn">▶ Auto Play</button>
+        <button class="control-btn" id="nextBtn">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+        let autoPlay = null;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', nextSlide);
+        document.getElementById('prevBtn').addEventListener('click', prevSlide);
+
+        document.getElementById('autoBtn').addEventListener('click', function() {
+            if (autoPlay) {
+                clearInterval(autoPlay);
+                autoPlay = null;
+                this.textContent = '▶ Auto Play';
+            } else {
+                autoPlay = setInterval(nextSlide, 5000);
+                this.textContent = '⏸ Pause';
+            }
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

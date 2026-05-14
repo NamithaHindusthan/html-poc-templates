@@ -1,0 +1,476 @@
+1. Users Table (users)
+
+Stores all system users (super admin, manager, agent, client).
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique identifier for each user.
+name	VARCHAR	Full name of the user.
+email	VARCHAR	Login/communication. Must be unique.
+phone	VARCHAR	Contact, useful for OTP/notifications.
+password_hash	TEXT	Encrypted password for security.
+role_id	UUID (FK)	Defines role (from roles table).
+created_at	TIMESTAMP	Track when user was created.
+updated_at	TIMESTAMP	Track last update.
+is_active	BOOLEAN	For suspending accounts without deletion.
+2. Roles Table (roles)
+
+Defines roles & hierarchy.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique role identifier.
+role_name	ENUM	Roles like super_admin, regional_manager, agent, client.
+description	TEXT	Clear meaning of the role.
+created_at	TIMESTAMP	Audit purpose.
+3. User Hierarchy Table (user_hierarchy)
+
+Defines who manages whom.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique mapping ID.
+manager_id	UUID (FK)	User acting as manager.
+subordinate_id	UUID (FK)	User acting as subordinate.
+created_at	TIMESTAMP	When relationship was added.
+4. Payments Table (payments)
+
+Tracks all payment transactions.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique transaction ID.
+user_id	UUID (FK)	Who made the payment.
+amount	DECIMAL	Payment amount.
+currency	VARCHAR	Currency type (e.g., INR, USD).
+payment_method	VARCHAR	e.g., UPI, Card, NetBanking.
+status	ENUM	pending, completed, failed, refunded.
+created_at	TIMESTAMP	Time of transaction.
+updated_at	TIMESTAMP	For tracking changes like refund.
+5. Notifications Table (notifications)
+
+Stores alerts sent to users.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique notification ID.
+user_id	UUID (FK)	Recipient of notification.
+message	TEXT	Notification content.
+type	ENUM	email, sms, in_app.
+is_read	BOOLEAN	To track unread messages.
+created_at	TIMESTAMP	When notification was generated.
+6. Analytics Table (analytics)
+
+For reporting & growth comparison (monthly/yearly).
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique entry ID.
+period	DATE	The month/year (e.g., 2025-09-01).
+total_users	INT	Users count at that period.
+total_agents	INT	Number of active agents.
+total_clients	INT	Number of active clients.
+total_payments	DECIMAL	Sum of payments in that period.
+created_at	TIMESTAMP	Record creation time.
+
+7. Insurance Policies Table (policies)
+
+Tracks all insurance policies sold/managed.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique policy ID.
+user_id	UUID (FK)	Owner (client) of the policy.
+agent_id	UUID (FK)	Agent who sold/handles the policy.
+policy_type	ENUM	vehicle, health, term, property, etc.
+policy_number	VARCHAR	Official policy number (from insurer).
+premium_amount	DECIMAL	Premium to be paid.
+start_date	DATE	When coverage starts.
+end_date	DATE	Expiry date.
+status	ENUM	active, expired, cancelled.
+created_at	TIMESTAMP	Policy creation date.
+8. Claims Table (claims)
+
+Tracks insurance claims raised by clients.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique claim ID.
+policy_id	UUID (FK)	Policy against which claim is raised.
+user_id	UUID (FK)	Client raising the claim.
+claim_amount	DECIMAL	Requested claim amount.
+approved_amount	DECIMAL	Approved amount (may be less).
+status	ENUM	pending, approved, rejected, settled.
+description	TEXT	Claim details (accident, hospital, etc.).
+created_at	TIMESTAMP	Claim raised date.
+updated_at	TIMESTAMP	For workflow tracking.
+9. Documents Table (documents)
+
+Stores uploaded files related to policies, claims, and users.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique doc ID.
+user_id	UUID (FK)	Owner of the document.
+related_type	ENUM	policy, claim, kyc.
+related_id	UUID	Links to policy/claim/user KYC.
+file_path	VARCHAR	Where file is stored (cloud/local).
+file_type	VARCHAR	pdf, jpg, png.
+uploaded_at	TIMESTAMP	Upload date.
+🔟 Audit Logs Table (audit_logs)
+
+Keeps record of critical actions (important for compliance).
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique log ID.
+user_id	UUID (FK)	Who performed the action.
+action	TEXT	e.g., "created policy", "updated claim".
+entity_type	VARCHAR	policy, claim, user, etc.
+entity_id	UUID	Which record was affected.
+created_at	TIMESTAMP	When it happened.
+1️⃣1️⃣ Commissions Table (commissions)
+
+Tracks agent/sub-agent earnings.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique commission ID.
+agent_id	UUID (FK)	Agent earning the commission.
+policy_id	UUID (FK)	Policy linked to the commission.
+commission_rate	DECIMAL	% of premium assigned.
+commission_amt	DECIMAL	Actual earning.
+paid_status	ENUM	pending, paid.
+created_at	TIMESTAMP	For financial reconciliation.
+1️⃣2️⃣ Support Tickets Table (support_tickets)
+
+For client-agent-admin issue tracking.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique ticket ID.
+user_id	UUID (FK)	Who raised the ticket.
+assigned_to	UUID (FK)	Agent/manager handling the issue.
+subject	VARCHAR	Ticket title.
+description	TEXT	Details of the issue.
+status	ENUM	open, in_progress, resolved, closed.
+created_at	TIMESTAMP	Raised date.
+updated_at	TIMESTAMP	Track SLA/resolution.
+
+1. Activity Logs / Events Table (activity_logs)
+
+Better than audit_logs because this can store both system and user actions for analytics & dashboards.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique event ID
+user_id	UUID (FK)	Who did the action
+role_id	UUID (FK)	Which role performed it
+event_type	VARCHAR	login, policy_purchase, claim_submitted, payment_done, etc.
+details	JSONB	Flexible for extra info (like amount, policy ID, etc.)
+ip_address	VARCHAR	Security / fraud prevention
+created_at	TIMESTAMP	Timeline of events
+
+👉 Useful for dashboards (last logins, actions per day), security alerts, and behavior analysis.
+
+2. Login Sessions Table (sessions)
+
+For tracking login/logout & securing accounts.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique session ID
+user_id	UUID (FK)	Who logged in
+device_info	VARCHAR	e.g., Chrome on Windows
+ip_address	VARCHAR	To detect unusual logins
+status	ENUM	active, terminated, expired
+created_at	TIMESTAMP	Login time
+ended_at	TIMESTAMP	Logout time
+
+👉 Helps Super Admin monitor suspicious logins and Admins manage active users.
+
+3. Tasks / Reminders Table (tasks)
+
+Agents often need reminders (follow-up with client, renew policy, collect payment).
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique task ID
+user_id	UUID (FK)	Task owner (agent/manager)
+client_id	UUID (FK)	Related client
+title	VARCHAR	Task title (e.g., "Follow up on renewal")
+description	TEXT	Extra notes
+due_date	DATE	Deadline
+status	ENUM	pending, done, overdue
+created_at	TIMESTAMP	Created on
+
+👉 Agents/Sub-agents can track work, Managers can see productivity, Clients can get reminders.
+
+4. Announcements / Broadcasts Table (announcements)
+
+For sending system-wide or role-based updates.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique announcement ID
+title	VARCHAR	Subject (e.g., "New Health Policy Launched")
+content	TEXT	Message body
+target_role	ENUM	all, agents, clients, admins
+created_by	UUID (FK)	Super Admin who created it
+created_at	TIMESTAMP	Published on
+expires_at	TIMESTAMP	Optional end date
+
+👉 Super Admin can push campaigns, updates, new schemes → visible on dashboards.
+
+5. Feedback & Ratings Table (feedback)
+
+For client → agent and agent → system feedback.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Feedback ID
+from_user	UUID (FK)	Who gave feedback
+to_user	UUID (FK)	Who received feedback (optional)
+rating	INT	(1-5 stars)
+comment	TEXT	Written feedback
+created_at	TIMESTAMP	Date
+
+👉 Clients can rate their agent, Sub-agents can give platform feedback → helps quality improvement.
+
+6. Dashboards / Analytics Pre-Computed Table (dashboard_metrics)
+
+Instead of calculating everything live, store summarized metrics daily/weekly.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique record
+role_id	UUID (FK)	Role for which metrics apply
+total_policies	INT	Total active policies
+total_claims	INT	Total claims filed
+revenue	DECIMAL	Collected revenue
+commissions	DECIMAL	Paid to agents
+clients_added	INT	New clients onboarded
+generated_on	DATE	Snapshot date
+
+```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+1. User Management
+Users Table (users)
+
+Stores all system users (super admin, manager, agent, client).
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique identifier for each user
+name	VARCHAR	Full name of the user
+email	VARCHAR	Login/communication (unique)
+phone	VARCHAR	Contact, useful for OTP/notifications
+password_hash	TEXT	Encrypted password
+role_id	UUID (FK)	Defines role (from roles table)
+created_at	TIMESTAMP	Track when created
+updated_at	TIMESTAMP	Last update
+is_active	BOOLEAN	Suspend/activate account
+Roles Table (roles)
+
+Defines roles & hierarchy.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique role identifier
+role_name	ENUM	super_admin, regional_manager, agent, client
+description	TEXT	Explains role meaning
+created_at	TIMESTAMP	For audit
+User Hierarchy Table (user_hierarchy)
+
+Defines who manages whom.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique mapping ID
+manager_id	UUID (FK)	Manager’s user_id
+subordinate_id	UUID (FK)	Subordinate’s user_id
+created_at	TIMESTAMP	Relationship creation date
+2. Insurance Core
+Policies Table (policies)
+
+Tracks all insurance policies.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Unique policy ID
+user_id	UUID (FK)	Owner (client)
+agent_id	UUID (FK)	Agent managing policy
+policy_type	ENUM	vehicle, health, term, property, etc.
+policy_number	VARCHAR	Official insurer number
+premium_amount	DECIMAL	Premium to pay
+start_date	DATE	Coverage start
+end_date	DATE	Expiry date
+status	ENUM	active, expired, cancelled
+created_at	TIMESTAMP	Creation date
+Claims Table (claims)
+
+Tracks claims filed.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Claim ID
+policy_id	UUID (FK)	Related policy
+user_id	UUID (FK)	Client raising claim
+claim_amount	DECIMAL	Requested amount
+approved_amount	DECIMAL	Approved amount
+status	ENUM	pending, approved, rejected, settled
+description	TEXT	Claim details
+created_at	TIMESTAMP	Raised on
+updated_at	TIMESTAMP	Last update
+Documents Table (documents)
+
+Stores uploaded files.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Document ID
+user_id	UUID (FK)	Owner
+related_type	ENUM	policy, claim, kyc
+related_id	UUID	Linked record
+file_path	VARCHAR	Storage path
+file_type	VARCHAR	pdf, jpg, png
+uploaded_at	TIMESTAMP	Upload date
+3. Financial
+Payments Table (payments)
+
+Tracks payments.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Transaction ID
+user_id	UUID (FK)	Payer
+policy_id	UUID (FK)	Policy linked
+amount	DECIMAL	Amount paid
+currency	VARCHAR	INR, USD, etc.
+payment_method	VARCHAR	UPI, Card, Bank
+status	ENUM	pending, completed, failed, refunded
+created_at	TIMESTAMP	Time of transaction
+updated_at	TIMESTAMP	Status changes
+Commissions Table (commissions)
+
+Agent/sub-agent earnings.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Commission ID
+agent_id	UUID (FK)	Agent earning
+policy_id	UUID (FK)	Related policy
+commission_rate	DECIMAL	% of premium
+commission_amt	DECIMAL	Actual earning
+paid_status	ENUM	pending, paid
+created_at	TIMESTAMP	For records
+4. Communication
+Notifications Table (notifications)
+
+Individual user alerts.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Notification ID
+user_id	UUID (FK)	Recipient
+message	TEXT	Content
+type	ENUM	email, sms, in_app
+is_read	BOOLEAN	Read/unread
+created_at	TIMESTAMP	When created
+Announcements Table (announcements)
+
+System-wide/role-based updates.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Announcement ID
+title	VARCHAR	Subject
+content	TEXT	Body
+target_role	ENUM	all, agents, clients, admins
+created_by	UUID (FK)	Creator
+created_at	TIMESTAMP	Publish date
+expires_at	TIMESTAMP	Expiry
+Support Tickets Table (support_tickets)
+
+Issue tracking.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Ticket ID
+user_id	UUID (FK)	Raised by
+assigned_to	UUID (FK)	Handler
+subject	VARCHAR	Title
+description	TEXT	Details
+status	ENUM	open, in_progress, resolved, closed
+created_at	TIMESTAMP	Raised on
+updated_at	TIMESTAMP	Last change
+Feedback Table (feedback)
+
+Ratings & reviews.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Feedback ID
+from_user	UUID (FK)	Who gave
+to_user	UUID (FK)	Who received
+rating	INT	1–5 stars
+comment	TEXT	Written feedback
+created_at	TIMESTAMP	When given
+Tasks Table (tasks)
+
+Reminders/work items.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Task ID
+user_id	UUID (FK)	Task owner
+client_id	UUID (FK)	Related client
+title	VARCHAR	Title
+description	TEXT	Details
+due_date	DATE	Deadline
+status	ENUM	pending, done, overdue
+created_at	TIMESTAMP	Created on
+5. Analytics & Logs
+Analytics Table (analytics)
+
+Monthly/yearly trends.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Entry ID
+period	DATE	Period (month/year)
+total_users	INT	Count
+total_agents	INT	Count
+total_clients	INT	Count
+total_payments	DECIMAL	Sum of payments
+created_at	TIMESTAMP	Record time
+Dashboard Metrics Table (dashboard_metrics)
+
+Precomputed metrics.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Record ID
+role_id	UUID (FK)	Role
+total_policies	INT	Active policies
+total_claims	INT	Claims filed
+revenue	DECIMAL	Collected revenue
+commissions	DECIMAL	Paid to agents
+clients_added	INT	New clients
+generated_on	DATE	Snapshot
+Activity Logs Table (activity_logs)
+
+System + user events.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Event ID
+user_id	UUID (FK)	Actor
+role_id	UUID (FK)	Role
+event_type	VARCHAR	login, payment, claim_submitted
+details	JSONB	Extra info
+ip_address	VARCHAR	Security
+created_at	TIMESTAMP	When
+Audit Logs Table (audit_logs)
+
+Critical compliance actions.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Log ID
+user_id	UUID (FK)	Actor
+action	TEXT	e.g., "updated claim"
+entity_type	VARCHAR	policy, claim, user
+entity_id	UUID	Record affected
+created_at	TIMESTAMP	When
+Sessions Table (sessions)
+
+Track logins.
+
+Column Name	Data Type	Usefulness
+id	UUID (PK)	Session ID
+user_id	UUID (FK)	User
+device_info	VARCHAR	Device
+ip_address	VARCHAR	IP
+status	ENUM	active, expired
+created_at	TIMESTAMP	Login time
+ended_at	TIMESTAMP	Logout time
+✅ Summary
+
+You now have 19 interconnected tables:
+
+User Management → 3
+
+Insurance Core → 3
+
+Financial → 2
+
+Communication → 5
+
+Analytics & Logs → 6
+
+All connected through users, roles, policies, and payments.

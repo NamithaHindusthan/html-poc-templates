@@ -1,0 +1,201 @@
+🗂️ Database Design (PostgreSQL)
+
+I’ll now give table names, columns, data types, and why each column is important.
+
+1. Users Table (users)
+Column	Data Type	Why Needed
+user_id (PK)	UUID	Unique identifier
+full_name	VARCHAR(150)	Name of the person
+email	VARCHAR(150) UNIQUE	Login & communication
+phone	VARCHAR(20)	OTP / notifications
+password_hash	TEXT	Secure login
+role_id (FK)	INT REFERENCES roles(role_id)	Defines role
+organization_id (FK, NULL)	UUID REFERENCES organizations(org_id)	If user belongs to an org
+is_active	BOOLEAN	Suspend without deleting
+created_at	TIMESTAMP DEFAULT NOW()	Audit trail
+updated_at	TIMESTAMP	Last update
+2. Roles Table (roles)
+Column	Data Type	Why Needed
+role_id (PK)	SERIAL	Role ID
+role_name	ENUM('super_admin','admin','organization_owner','client')	Defines role type
+description	TEXT	Role explanation
+3. Organizations Table (organizations)
+Column	Data Type	Why Needed
+org_id (PK)	UUID	Organization ID
+name	VARCHAR(200)	Organization name
+owner_id (FK)	UUID REFERENCES users(user_id)	The Organization Owner
+created_at	TIMESTAMP DEFAULT NOW()	Created date
+4. Policies Table (policies)
+Column	Data Type	Why Needed
+policy_id (PK)	UUID	Policy ID
+client_id (FK)	UUID REFERENCES users(user_id)	Owner of policy
+admin_id (FK)	UUID REFERENCES users(user_id)	Admin who sold policy
+policy_type	ENUM('health','life','vehicle','general')	Insurance type
+policy_number	VARCHAR(100)	Official number
+premium_amount	DECIMAL	Premium value
+start_date	DATE	Policy validity start
+end_date	DATE	Expiry date
+status	ENUM('active','expired','cancelled')	Policy state
+created_at	TIMESTAMP DEFAULT NOW()	Tracking
+5. Claims Table (claims)
+Column	Data Type	Why Needed
+claim_id (PK)	UUID	Unique claim ID
+policy_id (FK)	UUID REFERENCES policies(policy_id)	Policy under claim
+client_id (FK)	UUID REFERENCES users(user_id)	Who raised the claim
+claim_amount	DECIMAL	Amount requested
+approved_amount	DECIMAL	Amount approved
+status	ENUM('pending','approved','rejected','settled')	Claim workflow
+description	TEXT	Details
+created_at	TIMESTAMP DEFAULT NOW()	Date of claim
+updated_at	TIMESTAMP	Track updates
+6. Payments Table (payments)
+Column	Data Type	Why Needed
+payment_id (PK)	UUID	Payment ID
+client_id (FK)	UUID REFERENCES users(user_id)	Who paid
+policy_id (FK)	UUID REFERENCES policies(policy_id)	Related policy
+amount	DECIMAL	Payment value
+method	ENUM('upi','card','netbanking')	Mode of payment
+status	ENUM('pending','completed','failed','refunded')	Payment status
+created_at	TIMESTAMP DEFAULT NOW()	Payment time
+7. Documents Table (documents)
+Column	Data Type	Why Needed
+doc_id (PK)	UUID	Document ID
+user_id (FK)	UUID REFERENCES users(user_id)	Who uploaded
+related_type	ENUM('policy','claim','kyc')	What this doc is for
+related_id	UUID	Links to policy/claim/user
+file_path	VARCHAR	MinIO storage path
+file_type	VARCHAR	File type
+uploaded_at	TIMESTAMP DEFAULT NOW()	When uploaded
+8. Notifications Table (notifications)
+Column	Data Type	Why Needed
+notif_id (PK)	UUID	Notification ID
+user_id (FK)	UUID REFERENCES users(user_id)	Who gets notified
+message	TEXT	Content
+type	ENUM('email','sms','in_app')	Channel
+is_read	BOOLEAN	Seen/unseen
+created_at	TIMESTAMP DEFAULT NOW()	Time sent
+9. Analytics Table (analytics)
+Column	Data Type	Why Needed
+analytics_id (PK)	UUID	Record ID
+period	DATE	Month/year
+total_users	INT	Count of users
+total_orgs	INT	Count of orgs
+total_policies	INT	Count of policies
+total_claims	INT	Count of claims
+total_revenue	DECIMAL	Revenue
+created_at	TIMESTAMP DEFAULT NOW()	Snapshot time
+🔗 Key Relationships
+
+users → central table.
+
+roles → defines what each user does.
+
+organizations → link owners to clients.
+
+policies → connect admins (seller) + clients (buyer).
+
+claims → connect clients + policies.
+
+payments → link policies + clients.
+
+documents → attach to users/policies/claims.
+
+analytics → aggregate daily/monthly stats.
+
+🎨 Dashboards (Frontend)
+1. Super Admin Dashboard
+
+Widgets:
+
+Total users, admins, policies, revenue, claims.
+
+Graphs: monthly revenue trend, claims approval rate.
+
+Tables:
+
+List of admins.
+
+Latest audit logs.
+
+Controls:
+
+Add/remove Admins.
+
+Push announcements.
+
+2. Admin Dashboard
+
+Widgets:
+
+Active policies count.
+
+Claims in pipeline.
+
+Sales revenue.
+
+Tables:
+
+List of Clients (direct + via org).
+
+Pending claims.
+
+Commission summary.
+
+Controls:
+
+Create/approve policies.
+
+Approve/reject claims.
+
+3. Organization Owner Dashboard
+
+Widgets:
+
+Employees insured.
+
+Premiums paid.
+
+Renewals due.
+
+Tables:
+
+List of employees + policy status.
+
+Controls:
+
+Add employee.
+
+Pay premiums for group.
+
+4. Client Dashboard
+
+Widgets:
+
+My policies.
+
+Upcoming premium date.
+
+Claim status.
+
+Tables:
+
+My policies list.
+
+My claims list.
+
+
+Controls:
+
+Buy policy.
+
+Raise claim.
+
+Upload documents.
+
+✅ This blueprint now covers:
+
+Tables + columns + purpose
+
+Role responsibilities
+
+Dashboard design

@@ -1,0 +1,331 @@
+1️⃣ Super Admin Dashboard
+Purpose:
+
+Complete system overview.
+
+Manage all admins, agents, and clients.
+
+Assign regions or sub-agents to managers/agents.
+
+See all analytics & reports.
+
+Broadcast notifications/announcements.
+
+Frontend Layout:
+
+Top Navigation / Header:
+
+Logo + Platform Name
+
+User profile + logout
+
+Notifications icon (pop-up dropdown with recent alerts)
+
+Sidebar Menu:
+
+Dashboard (summary)
+
+Users Management (all roles)
+
+Policies
+
+Claims
+
+Payments & Commissions
+
+Notifications / Announcements
+
+Analytics / Reports
+
+Settings
+
+Dashboard Main Content:
+
+Summary Cards:
+
+Total Users
+
+Active Agents
+
+Active Clients
+
+Total Policies
+
+Total Revenue
+
+Charts / Graphs:
+
+Policies growth (monthly/yearly)
+
+Payments & Commissions chart
+
+Agent performance heatmap
+
+Recent Activities / Alerts:
+
+Recent logins, recent claims, policy expirations
+
+Key Features:
+
+Assign agents to managers/admins
+
+Add new admins or agents
+
+Generate system-wide notifications
+
+APIs Needed (FastAPI):
+
+GET /api/users → fetch all users with roles and hierarchy
+
+POST /api/users → add new admin/agent
+
+PATCH /api/users/{id} → update user info or role
+
+POST /api/assign → assign agent/sub-agent to manager/admin
+
+GET /api/analytics/summary → dashboard metrics
+
+GET /api/notifications → recent notifications
+
+POST /api/notifications → send broadcast or targeted notifications
+
+GET /api/policies → view all policies
+
+GET /api/claims → view all claims
+
+2️⃣ Admin / Regional Manager Dashboard
+Purpose:
+
+See all agents under their supervision.
+
+Monitor clients of assigned agents.
+
+Approve/review certain requests (optional).
+
+Track payments and policy status.
+
+Frontend Layout:
+
+Sidebar:
+
+Dashboard
+
+Agents Management
+
+Clients under agents
+
+Policies
+
+Claims
+
+Notifications
+
+Dashboard Main Content:
+
+Summary Cards:
+
+My Agents Count
+
+Clients under my agents
+
+Active Policies
+
+Pending Payments / Claims
+
+Charts:
+
+Agent performance (bar chart)
+
+Payment collection trends
+
+Tables:
+
+Agents list → click to see clients & policies
+
+Alerts for upcoming expirations
+
+Key Features:
+
+Add/approve agents
+
+Assign clients to agents
+
+Quick notifications to agents
+
+APIs Needed:
+
+GET /api/agents?manager_id={id} → list all assigned agents
+
+POST /api/agents → add new agent under manager
+
+GET /api/clients?manager_id={id} → fetch clients under agents
+
+PATCH /api/assign-client → assign client to agent
+
+GET /api/policies?agent_id={id} → fetch policies of assigned agents
+
+GET /api/claims?agent_id={id} → claims under assigned agents
+
+GET /api/notifications → notifications for this admin
+
+POST /api/notifications → notify assigned agents
+
+3️⃣ Sub-Agent / Agent Dashboard
+Purpose:
+
+Track own clients & their policies.
+
+Manage client details and policy renewals.
+
+Upload documents, follow-ups, tasks.
+
+See personal performance metrics.
+
+Frontend Layout:
+
+Sidebar:
+
+Dashboard
+
+My Clients
+
+Policies
+
+Claims
+
+Payments
+
+Tasks / Reminders
+
+Notifications
+
+Dashboard Main Content:
+
+Summary Cards:
+
+Total Clients
+
+Active Policies
+
+Policies expiring soon
+
+Pending Tasks
+
+Tables / Lists:
+
+Client list → click for details
+
+Policy list → renewal alerts
+
+Claim list → status
+
+Tasks / Reminders:
+
+Follow-up schedule with clients
+
+Notifications Popup:
+
+Important alerts (policy expirations, payments)
+
+APIs Needed:
+
+GET /api/clients?agent_id={id} → list of assigned clients
+
+POST /api/clients → add new client
+
+PATCH /api/clients/{id} → update client info
+
+GET /api/policies?agent_id={id} → assigned client policies
+
+GET /api/claims?agent_id={id} → claims raised by clients
+
+POST /api/tasks → create follow-up or reminder
+
+GET /api/tasks?agent_id={id} → list of tasks
+
+GET /api/notifications → alerts for this agent
+
+4️⃣ Client Dashboard
+Purpose:
+
+View their own policies, claims, payments.
+
+Receive notifications.
+
+Upload KYC or documents.
+
+Frontend Layout:
+
+Sidebar:
+
+Dashboard / Summary
+
+My Policies
+
+Claims
+
+Payments
+
+Documents
+
+Notifications
+
+Dashboard Main Content:
+
+Summary Cards:
+
+Active Policies
+
+Pending Payments
+
+Claims Status
+
+Tables:
+
+Policy list → click for details & documents
+
+Claims list → status & approved amount
+
+Upload Section:
+
+KYC / Aadhaar / PAN upload
+
+APIs Needed:
+
+GET /api/policies?user_id={id} → fetch user policies
+
+GET /api/claims?user_id={id} → fetch claims
+
+GET /api/payments?user_id={id} → payment history
+
+POST /api/documents → upload KYC / documents
+
+GET /api/notifications → fetch user notifications
+
+5️⃣ Notifications / Pop-ups
+
+Global notification component on top-right corner for every dashboard.
+
+Fetch via: GET /api/notifications?user_id={id}
+
+Real-time updates can use WebSocket / Socket.IO or polling every few seconds.
+
+Super Admin can broadcast notifications to roles or individual users.
+
+6️⃣ General Frontend Design Principles
+
+Responsive & Clean Layout: Tailwind CSS + React.
+
+Cards + Tables + Charts:
+
+Cards for KPIs
+
+Tables for details
+
+Charts for trends (Chart.js / Recharts)
+
+Sidebar Navigation: Role-based, dynamically rendered.
+
+Pop-ups / Modals: For creating users, assigning clients, sending notifications.
+
+API-first: Every UI component maps to a backend endpoint.
